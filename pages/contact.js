@@ -1,47 +1,97 @@
-import React from 'react';
+import React, { useState } from 'react';
+import wretch from 'wretch';
 import styled from 'styled-components';
 import { Page } from '@/components/Page';
 import { Button } from '@/components/Button';
 
-const Contact = () => (
-  <Page title="Contact">
-    <form
-      name="contact"
-      method="POST"
-      data-netlify="true"
-      netlify-honeypot="bot-field"
-    >
-      <Row>
-        <Label>Full name</Label>
-        <Input type="text" name="name" required />
-      </Row>
-      <Row>
-        <Label>Email</Label>
-        <Input type="email" name="email" required />
-      </Row>
-      <Row>
-        <Label>Subject</Label>
-        <Select name="subject[]">
-          <option value="enquiry">General enquiry</option>
-          <option value="booking">Bookings</option>
-        </Select>
-      </Row>
-      <Row hidden>
-        <Label>Don&apos;t fill this out if you&apos;re human</Label>
-        <input type="text" name="bot-field" />
-      </Row>
-      <Row>
-        <Label>Message</Label>
-        <Textarea name="message" required />
-      </Row>
-      <Row hasLabel={false}>
-        <Button type="submit" style={{ flex: '0 0 auto' }}>
-          Send
-        </Button>
-      </Row>
-    </form>
-  </Page>
-);
+const FORM_NAME = 'contact';
+
+const Contact = () => {
+  const [isSuccess, setIsSuccess] = useState(false);
+  const [isError, setIsError] = useState(false);
+  const [name, setName] = useState('');
+
+  function handleFormSubmit(event) {
+    event.preventDefault();
+
+    const data = [...event.target.elements]
+      .filter(element => Boolean(element.name))
+      .reduce((json, element) => {
+        json[element.name] = element.value;
+        return json;
+      }, {});
+
+    wretch(event.target.action)
+      .formUrl(data)
+      .post()
+      .res(() => setIsSuccess(true))
+      .catch(() => setIsError(true));
+  }
+
+  function getFirstName() {
+    const [firstName] = name.split(' ');
+    return firstName.charAt(0).toUpperCase() + firstName.slice(1);
+  }
+
+  return (
+    <Page title="Contact">
+      {isSuccess ? (
+        <p>
+          Thank you for reaching out to us {getFirstName()}. We will get back to
+          you as soon as possible.
+        </p>
+      ) : isError ? (
+        <p>
+          Sorry {getFirstName()}, there was a problem sending the form to us.
+          Please try again later.
+        </p>
+      ) : (
+        <form
+          name={FORM_NAME}
+          method="POST"
+          data-netlify="true"
+          netlify-honeypot="bot-field"
+          onSubmit={handleFormSubmit}
+        >
+          <input type="hidden" name="form-name" value={FORM_NAME} />
+          <Row>
+            <Label>Full name</Label>
+            <Input
+              type="text"
+              name="name"
+              onChange={event => setName(event.target.value)}
+              required
+            />
+          </Row>
+          <Row>
+            <Label>Email</Label>
+            <Input type="email" name="email" required />
+          </Row>
+          <Row>
+            <Label>Subject</Label>
+            <Select name="subject[]">
+              <option value="enquiry">General enquiry</option>
+              <option value="booking">Bookings</option>
+            </Select>
+          </Row>
+          <Row hidden>
+            <Label>Don&apos;t fill this out if you&apos;re human</Label>
+            <input type="text" name="bot-field" />
+          </Row>
+          <Row>
+            <Label>Message</Label>
+            <Textarea name="message" required />
+          </Row>
+          <Row hasLabel={false}>
+            <Button type="submit" style={{ flex: '0 0 auto' }}>
+              Send
+            </Button>
+          </Row>
+        </form>
+      )}
+    </Page>
+  );
+};
 
 const Row = styled.p`
   display: ${props => (props.hidden ? 'none' : 'flex')};
