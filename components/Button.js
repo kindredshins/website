@@ -21,7 +21,3 @@ export const Button = styled.button`
     background: linear-gradient(to bottom, #000, #555);
   }
 `;
-
-Button.defaultProps = {
-  type: 'button',
-};
