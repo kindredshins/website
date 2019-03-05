@@ -1,0 +1,25 @@
+{
+  "extends": ["eslint:recommended", "plugin:react/recommended", "prettier"],
+  "plugins": ["react", "import"],
+  "parser": "babel-eslint",
+  "env": {
+    "browser": true,
+    "node": true,
+    "es6": true
+  },
+  "rules": {
+    "import/prefer-default-export": "off",
+    "import/no-default-export": "error",
+    "react/boolean-prop-naming": "error",
+    "react/no-access-state-in-setstate": "error",
+    "react/no-array-index-key": "warn",
+    "react/no-did-mount-set-state": "error",
+    "react/no-did-update-set-state": "error",
+    "react/no-typos": "error",
+    "react/no-unused-state": "error",
+    "react/prefer-stateless-function": "error",
+    "react/require-default-props": "error",
+    "react/jsx-boolean-value": "error",
+    "react/jsx-pascal-case": "error"
+  }
+}
