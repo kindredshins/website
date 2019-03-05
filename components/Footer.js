@@ -3,45 +3,34 @@ import styled from 'styled-components';
 import { theme } from '@/styles/theme';
 import { resetList } from '@/styles/mixins';
 import { Icon } from '@/components/Icon';
-import { Link } from '@/components/Link';
 
 const Footer = () => (
   <FooterContainer>
     <FooterNav>
       <FooterItem>
-        <Link href="https://www.instagram.com/kindredshins/">
-          <FooterLink>
-            <Icon type="instagram" />
-          </FooterLink>
-        </Link>
+        <FooterLink href="https://www.instagram.com/kindredshins/">
+          <Icon type="instagram" />
+        </FooterLink>
       </FooterItem>
       <FooterItem>
-        <Link href="https://www.facebook.com/kindred.shins.1/">
-          <FooterLink>
-            <Icon type="facebook" />
-          </FooterLink>
-        </Link>
+        <FooterLink href="https://www.facebook.com/kindred.shins.1/">
+          <Icon type="facebook" />
+        </FooterLink>
       </FooterItem>
       <FooterItem>
-        <Link href="https://twitter.com/kindredshins">
-          <FooterLink>
-            <Icon type="twitter" />
-          </FooterLink>
-        </Link>
+        <FooterLink href="https://twitter.com/kindredshins">
+          <Icon type="twitter" />
+        </FooterLink>
       </FooterItem>
       <FooterItem>
-        <Link href="https://soundcloud.com/kindredshins">
-          <FooterLink>
-            <Icon type="soundcloud" />
-          </FooterLink>
-        </Link>
+        <FooterLink href="https://soundcloud.com/kindredshins">
+          <Icon type="soundcloud" />
+        </FooterLink>
       </FooterItem>
       <FooterItem>
-        <Link href="https://www.youtube.com/channel/UCB7dC0WRwZL9HqUdmZGHP3A">
-          <FooterLink>
-            <Icon type="youtube" />
-          </FooterLink>
-        </Link>
+        <FooterLink href="https://www.youtube.com/channel/UCB7dC0WRwZL9HqUdmZGHP3A">
+          <Icon type="youtube" />
+        </FooterLink>
       </FooterItem>
     </FooterNav>
   </FooterContainer>
