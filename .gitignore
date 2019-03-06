@@ -2,6 +2,7 @@
 dist
 out
 .next
+functions
 
 # dependencies
 node_modules
