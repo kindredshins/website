@@ -69,7 +69,7 @@ const Contact = () => {
           </Row>
           <Row>
             <Label>Subject</Label>
-            <Select name="subject[]">
+            <Select name="subject">
               <option value="enquiry">General enquiry</option>
               <option value="booking">Bookings</option>
             </Select>

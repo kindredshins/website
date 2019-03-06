@@ -6,33 +6,44 @@ const emailAddresses = {
   enquiry: 'contact@kindredshins.com',
 };
 
+const send = sendmail({
+  logger: {
+    debug: console.log,
+    info: console.info,
+    warn: console.warn,
+    error: console.error,
+  },
+});
+
 export const handler = (event, context, callback) => {
-  const body = querystring.parse(event.body, { arrayFormat: 'bracket' });
+  const body = querystring.parse(event.body);
 
   if (!body.name || !body.email || !body.subject || !body.message) {
     return callback(null, {
       statusCode: 403,
-      body: JSON.stringify({
-        error: 'Missing required fields',
-      }),
+      body: JSON.stringify({ error: 'Missing required fields' }),
+    });
+  }
+
+  if (!emailAddresses[body.subject]) {
+    return callback(null, {
+      statusCode: 403,
+      body: JSON.stringify({ error: 'Invalid subject' }),
     });
   }
 
   const descriptor = {
-    from: `"${body.name}" <${body.email}>`,
-    sender: 'contact@kindredshins.com',
+    from: `"${body.email}" <no-reply@kindredshins.com>`,
     to: emailAddresses[body.subject],
-    subject: `Message from kindredshins.com`,
+    subject: `${body.name} sent you a message from kindredshins.com`,
     text: body.message,
   };
 
-  sendmail(descriptor, error => {
+  send(descriptor, error => {
     if (error) {
       callback(null, {
         statusCode: 500,
-        body: JSON.stringify({
-          error: error.message,
-        }),
+        body: JSON.stringify({ error: error.message }),
       });
     } else {
       callback(null, {
