@@ -11,7 +11,7 @@
     "build:next": "next build",
     "build:lambda": "cd lambda && yarn && yarn build",
     "start": "next start",
-    "export": "yarn build && next export"
+    "export": "yarn build:next && next export && yarn build:lambda"
   },
   "dependencies": {
     "date-fns": "^1.30.1",
