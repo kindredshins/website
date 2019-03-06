@@ -1,5 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import styled, { css } from 'styled-components';
 import { rem, rgba } from 'polished';
+import Router from 'next/router';
 import { resetList } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
 
@@ -32,11 +34,32 @@ export const NavigationToggleLabel = styled.label`
   }
 `;
 
-export const NavigationToggleCheckbox = styled.input.attrs({
-  type: 'checkbox',
-})`
-  display: none;
-`;
+const NavigationToggleCheckboxBase = props => {
+  const [isChecked, setIsChecked] = useState(false);
+
+  function handleRouteChange() {
+    setIsChecked(false);
+  }
+
+  useEffect(() => {
+    Router.events.on('routeChangeStart', handleRouteChange);
+    return function cleanup() {
+      Router.events.off('routeChangeStart', handleRouteChange);
+    };
+  });
+
+  return (
+    <input
+      type="checkbox"
+      checked={isChecked}
+      onChange={event => setIsChecked(event.target.checked)}
+      hidden
+      {...props}
+    />
+  );
+};
+
+export const NavigationToggleCheckbox = styled(NavigationToggleCheckboxBase)``;
 
 export const NavigationItems = styled.ul`
   ${resetList};
