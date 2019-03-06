@@ -2,7 +2,7 @@
 dist
 out
 .next
-lambda-functions
+functions
 
 # dependencies
 node_modules
