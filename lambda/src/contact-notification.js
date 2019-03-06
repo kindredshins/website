@@ -1,5 +1,5 @@
 import sendmail from 'sendmail';
-import querystring from 'querystring';
+import querystring from 'query-string';
 
 const emailAddresses = {
   booking: 'booking@kindredshins.com',
@@ -7,13 +7,9 @@ const emailAddresses = {
 };
 
 export const handler = (event, context, callback) => {
-  if (event.httpMethod !== 'POST') {
-    return { statusCode: 405, body: 'Method Not Allowed' };
-  }
+  const body = querystring.parse(event.body, { arrayFormat: 'bracket' });
 
-  const body = querystring.parse(event.body);
-
-  if (!body.name || !body.email || !body['subject[]'] || !body.message) {
+  if (!body.name || !body.email || !body.subject || !body.message) {
     return callback(null, {
       statusCode: 403,
       body: JSON.stringify({

@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "netlify-lambda": "^1.4.2",
-    "querystring": "^0.2.0",
+    "query-string": "^6.3.0",
     "sendmail": "^1.4.1"
   }
 }
