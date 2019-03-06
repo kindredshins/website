@@ -4,7 +4,6 @@ import Head from 'next/head';
 import styled from 'styled-components';
 import { rem } from 'polished';
 import { theme } from '@/styles/theme';
-import { Player } from '@/components/Player';
 import { GlobalStyle } from '@/components/GlobalStyle';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
@@ -44,14 +43,9 @@ class KindredShins extends App {
           </Head>
           <GlobalStyle />
           <Header />
-          <Content>
-            <Main>
-              <Component {...pageProps} />
-            </Main>
-            <aside>
-              <AppPlayer playlistUrl="http://soundcloud.com/kindredshins/sets/website" />
-            </aside>
-          </Content>
+          <Main>
+            <Component {...pageProps} />
+          </Main>
           <Footer />
         </Wrapper>
         <AppBackground role="presentation" />
@@ -74,7 +68,7 @@ const Wrapper = styled.div`
   z-index: 0;
 `;
 
-const Content = styled.div`
+const Main = styled.main`
   flex: 1 1 auto;
   display: flex;
   flex-direction: column;
@@ -97,16 +91,9 @@ const Content = styled.div`
       top: 55px;
     }
   }
-`;
-
-const Main = styled.main`
-  display: flex;
-  flex-direction: column;
-  flex: 1 1 auto;
 
   @media (min-height: 785px) {
-    flex: 1 1 100%;
-    height: 1px;
+    flex: 1 1 0px;
   }
 `;
 
@@ -117,21 +104,6 @@ const AppBackground = styled(Background)`
   z-index: -1;
   left: 0;
   top: 0;
-`;
-
-const AppPlayer = styled(Player)`
-  position: absolute;
-  top: -12px;
-  right: 10px;
-  transform: translate(0, -100%);
-  z-index: 10;
-
-  @media (min-width: 685px) {
-    top: 0;
-    right: auto;
-    left: 50%;
-    transform: translate(-50%, -55%);
-  }
 `;
 
 export default KindredShins;

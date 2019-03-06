@@ -5,6 +5,7 @@ import { withRouter } from 'next/router';
 import { visuallyHidden } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
 import { Link } from '@/components/Link';
+import { Player } from '@/components/Player';
 import {
   Navigation,
   NavigationToggleLabel,
@@ -57,6 +58,8 @@ const HeaderBase = ({ router }) => (
         </NavigationItem>
       </NavigationItems>
     </Navigation>
+
+    <HeaderPlayer playlistUrl="http://soundcloud.com/kindredshins/sets/website" />
   </HeaderContainer>
 );
 
@@ -67,16 +70,35 @@ HeaderBase.propTypes = {
 const HeaderContainer = styled.header`
   flex: 0 0 auto;
   background: ${theme.background};
-  position: relative;
   z-index: 5;
+  position: sticky;
+  top: 0;
 
   @media (min-width: 685px) {
     padding-top: 20px;
+  }
+
+  @media (min-height: 785px) {
+    position: relative;
   }
 `;
 
 const Logo = styled.span`
   ${visuallyHidden};
+`;
+
+const HeaderPlayer = styled(Player)`
+  position: absolute;
+  bottom: 12px;
+  right: 10px;
+  z-index: 10;
+
+  @media (min-width: 685px) {
+    bottom: 0;
+    right: auto;
+    left: 50%;
+    transform: translate(-50%, 48%);
+  }
 `;
 
 export const Header = withRouter(HeaderBase);
