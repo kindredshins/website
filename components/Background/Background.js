@@ -11,7 +11,17 @@ export const Background = ({ imageSources, framesPerSecond, ...props }) => {
 
   function preload(image) {
     const preloader = new Image();
-    preloader.src = image;
+
+    // preload after other page resources
+    // have completed to avoid blocking
+    if (document.readyState === 'complete') {
+      preloader.src = image;
+    } else {
+      window.addEventListener('load', () => {
+        preloader.src = image;
+      });
+    }
+
     return preloader;
   }
 

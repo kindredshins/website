@@ -17,6 +17,7 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const [playlist, setPlaylist] = useState(undefined);
   const player = useRef(undefined);
   const playRef = useRef(undefined);
+  const isLoading = !playlist;
 
   useEffect(() => {
     player.current = new SoundCloudAudio(config.soundCloudClientId);
@@ -38,28 +39,34 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
     }
   }, [playlist]);
 
-  if (!playlist) {
-    return null;
-  }
-
   return (
     <section {...props}>
       <Title>Now playing</Title>
-      <Track>{playlist.tracks[activeTrackIndex].title}</Track>
+      {!isLoading && <Track>{playlist.tracks[activeTrackIndex].title}</Track>}
       <Controls>
-        <PlayerButton onClick={() => play(activeTrackIndex - 1)}>
+        <PlayerButton
+          onClick={() => play(activeTrackIndex - 1)}
+          disabled={isLoading}
+        >
           <Icon type="previous-track" />
         </PlayerButton>
         {isPlaying ? (
-          <LargePlayerButton onClick={handlePauseClick}>
+          <LargePlayerButton onClick={handlePauseClick} disabled={isLoading}>
             <Icon type="pause" />
           </LargePlayerButton>
         ) : (
-          <LargePlayerButton onClick={() => play()} ref={playRef}>
+          <LargePlayerButton
+            onClick={() => play()}
+            ref={playRef}
+            disabled={isLoading}
+          >
             <Icon type="play" style={{ marginLeft: 3 }} />
           </LargePlayerButton>
         )}
-        <PlayerButton onClick={() => play(activeTrackIndex + 1)}>
+        <PlayerButton
+          onClick={() => play(activeTrackIndex + 1)}
+          disabled={isLoading}
+        >
           <Icon type="next-track" />
         </PlayerButton>
       </Controls>
@@ -143,6 +150,10 @@ const PlayerButton = styled(Button)`
   ${Icon} {
     width: 14px;
     height: 14px;
+  }
+
+  &:disabled {
+    cursor: wait;
   }
 `;
 

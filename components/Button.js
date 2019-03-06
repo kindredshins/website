@@ -17,7 +17,7 @@ export const Button = styled.button`
     border-color: #555;
   }
 
-  &:active {
+  &:enabled:active {
     background: linear-gradient(to bottom, #000, #555);
   }
 `;
