@@ -5,6 +5,7 @@ const About = () => (
   <Page title="About">
     <PageSidebar title="About" />
     <PageBody>
+      <img src="/static/images/banner.jpg" alt="" />
       <p>
         Kindred Shins are well known for creating myths, but it&apos;s a lesser
         known fact that&hellip;
