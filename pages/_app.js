@@ -1,13 +1,13 @@
 import React from 'react';
+import { TypographyStyle, GoogleFont } from 'react-typography';
 import App, { Container as NextContainer } from 'next/app';
 import Head from 'next/head';
 import styled from 'styled-components';
-import { rem } from 'polished';
-import { theme } from '@/styles/theme';
 import { GlobalStyle } from '@/components/GlobalStyle';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Background } from '@/components/Background';
+import { typography } from '@/styles/typography';
 
 class KindredShins extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -36,10 +36,8 @@ class KindredShins extends App {
             <title>Kindred Shins</title>
             <meta name="msapplication-tap-highlight" content="no" />
             <meta name="robots" content="noindex, nofollow" />
-            <link
-              href="https://fonts.googleapis.com/css?family=Lato:400,700"
-              rel="stylesheet"
-            />
+            <TypographyStyle typography={typography} />
+            <GoogleFont typography={typography} />
           </Head>
           <GlobalStyle />
           <Header />
@@ -55,13 +53,9 @@ class KindredShins extends App {
 }
 
 const Wrapper = styled.div`
-  font-family: 'Lato', sans-serif;
-  color: ${theme.foreground};
   min-width: 320px;
   min-height: 100vh;
   width: 100vw;
-  font-size: ${rem(16)};
-  line-height: 1.8em;
   display: flex;
   flex-direction: column;
   position: relative;

@@ -53,7 +53,7 @@ const Inner = styled.div`
 `;
 
 const Logo = styled.img`
-  margin: 0 auto;
+  margin: 0 auto 20px auto;
 `;
 
 const Sidebar = styled.div`
