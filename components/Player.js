@@ -15,30 +15,36 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
   const [playlist, setPlaylist] = useState(undefined);
-  const player = useRef(undefined);
-  const playRef = useRef(undefined);
-  const isLoading = !playlist;
+  const [player, setPlayer] = useState(undefined);
+  const playButtonRef = useRef(undefined);
+  const isLoading = !player || !playlist;
+
+  useEffect(function() {
+    if (!player) {
+      const scPlayer = new SoundCloudAudio(config.soundCloudClientId);
+
+      scPlayer.resolve(playlistUrl, scPlaylist => {
+        setPlaylist(scPlaylist);
+        setPlayer(scPlayer);
+      });
+    }
+  });
 
   useEffect(() => {
-    player.current = new SoundCloudAudio(config.soundCloudClientId);
-    player.current.on('ended', handleTrackEnded);
-    return function cleanup() {
-      player.current.off('ended', handleTrackEnded);
-    };
-  }, [config.soundCloudClientId]);
+    if (isLoading) return;
 
-  useEffect(() => {
-    player.current.resolve(playlistUrl, setPlaylist);
-  }, [playlistUrl]);
-
-  useEffect(() => {
-    if (playlist && isAutoPlay) {
+    if (isAutoPlay) {
       play().catch(() => {
         // no auto play allowed
       });
     }
-    return stop;
-  }, [playlist]);
+
+    player.on('ended', handleTrackEnded);
+    return function cleanup() {
+      player.off('ended', handleTrackEnded);
+      stop();
+    };
+  }, [player, playlist]);
 
   return (
     <section {...props}>
@@ -58,7 +64,7 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
         ) : (
           <LargePlayerButton
             onClick={() => play()}
-            ref={playRef}
+            ref={playButtonRef}
             disabled={isLoading}
           >
             <Icon type="play" style={{ marginLeft: 3 }} />
@@ -82,7 +88,7 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
 
   function handlePauseClick() {
     setIsPlaying(false);
-    player.current.pause();
+    player.pause();
   }
 
   function handleTrackEnded() {
@@ -100,14 +106,14 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
       trackIndex = lastTrackIndex;
     }
 
-    return player.current.play({ playlistIndex: trackIndex }).then(() => {
+    return player.play({ playlistIndex: trackIndex }).then(() => {
       setIsPlaying(true);
       setActiveTrackIndex(trackIndex);
     });
   }
 
   function stop() {
-    player.current.stop();
+    player.stop();
     setIsPlaying(false);
     setActiveTrackIndex(0);
   }
