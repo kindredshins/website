@@ -6,11 +6,37 @@ const About = () => (
     <PageSidebar title="About" />
     <PageBody>
       <p>
-        Kindred Shins are flamboyant, gun totting, smut peddling troubadours
-        who&apos;s ability to create myths are legendary. They were first flung
-        together for the Winter Olympics of 1988 for the Jamaican bobsled team,
-        they produced a blistering performance, setting a world record pace
-        before their accident cruelly robbed them of their deserved medal.
+        Kindred Shins are well known for creating myths, but it&apos;s a lesser
+        known fact that&hellip;
+      </p>
+      <ul>
+        <li>
+          They created the word gullible, which they later traded for a
+          meringue.
+        </li>
+        <li>
+          They shot the sheriff and the deputy, they are stone cold
+          motherfuckers.
+        </li>
+        <li>
+          They once beat Enrique Inglesias at poker and took his mole as
+          payment.
+        </li>
+        <li>
+          They once smelt what The Rock was cooking, and didn&apos;t like it,
+          not one bit.
+        </li>
+        <li>
+          They invented the flavour brown, later to be used in brown sauce.
+        </li>
+        <li>They started the first ever rumour.</li>
+      </ul>
+      <p>
+        They are flamboyant, gun totting, smut peddling troubadours that were
+        first flung together for the Winter Olympics of 1988 for the Jamaican
+        bobsled team, they produced a blistering performance, setting a world
+        record pace before their accident cruelly robbed them of their deserved
+        medal.
       </p>
       <p>
         Despite their success and returning to their homeland as heroes the work
@@ -39,32 +65,6 @@ const About = () => (
         them.
       </p>
       <p>Someone, somewhere, wins the lottery every single day&hellip;</p>
-      <h2>
-        Kindred Shins are well known for creating myths, but it&apos;s a lesser
-        known fact that...
-      </h2>
-      <ul>
-        <li>
-          They created the word gullible, which they later traded for a
-          meringue.
-        </li>
-        <li>
-          They shot the sheriff and the deputy, they are stone cold
-          motherfuckers.
-        </li>
-        <li>
-          They once beat Enrique Inglesias at poker and took his mole as
-          payment.
-        </li>
-        <li>
-          They once smelt what The Rock was cooking, and didn&apos;t like it,
-          not one bit.
-        </li>
-        <li>
-          They invented the flavour brown, later to be used in brown sauce.
-        </li>
-        <li>They started the first ever rumour.</li>
-      </ul>
     </PageBody>
   </Page>
 );
