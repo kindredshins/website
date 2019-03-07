@@ -20,6 +20,7 @@ export const Navigation = styled.nav`
   @media (min-width: ${NAV_HORIZONTAL_BREAKPOINT}) {
     display: flex;
     justify-content: center;
+    margin-left: -20px;
   }
 `;
 
