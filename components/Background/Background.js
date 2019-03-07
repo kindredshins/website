@@ -26,6 +26,8 @@ export const Background = ({ imageSources, framesPerSecond, ...props }) => {
   }
 
   function draw(frame = 0) {
+    if (!canvasRef.current) return;
+
     const canvas = canvasRef.current;
     const images = imagesRef.current;
     const image = images[frame];

@@ -37,6 +37,7 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
         // no auto play allowed
       });
     }
+    return stop;
   }, [playlist]);
 
   return (
@@ -97,6 +98,12 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
       setIsPlaying(true);
       setActiveTrackIndex(trackIndex);
     });
+  }
+
+  function stop() {
+    player.current.stop();
+    setIsPlaying(false);
+    setActiveTrackIndex(0);
   }
 };
 
