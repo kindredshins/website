@@ -34,20 +34,20 @@ const About = () => (
       <p>
         They are flamboyant, gun totting, smut peddling troubadours that were
         first flung together for the Winter Olympics of 1988 for the Jamaican
-        bobsled team, they produced a blistering performance, setting a world
+        bobsled team. They produced a blistering performance, setting a world
         record pace before their accident cruelly robbed them of their deserved
         medal.
       </p>
       <p>
         Despite their success and returning to their homeland as heroes the work
-        quickly dried up, after a series of ill fated business ventures and the
+        quickly dried up. After a series of ill fated business ventures and the
         untimely death of John Candy they found themselves living on the mean
         streets of trench town.
       </p>
       <p>
         They quickly formed a skiffle band and played to the local trampista to
         hone their skills before taking their act to the local cabaret shows
-        around town, due to their acerbic charm and grotesquely pretty features
+        around town. Due to their acerbic charm and grotesquely pretty features
         they started to gain notoriety and also reclaim their riches and social
         standing.
       </p>
