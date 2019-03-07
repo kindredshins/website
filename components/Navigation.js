@@ -72,6 +72,8 @@ export const NavigationItems = styled.ul`
     left: 0;
     width: 100%;
     box-shadow: 0 2px 5px ${rgba(theme.background, 0.5)};
+    margin-top: -10px;
+    padding-bottom: 10px;
 
     /* prettier-ignore */
     ${NavigationToggleCheckbox}:not(:checked) + & {
@@ -97,7 +99,8 @@ export const NavigationItem = styled.li`
 export const NavigationLink = styled.a`
   ${LINK_STYLES};
   display: block;
-  margin: 15px 20px;
+  margin: 0 20px;
+  padding: 5px 0;
   color: ${props => props.isActive && theme.primary};
   transition: color 200ms;
   cursor: ${props => (props.isActive ? 'default' : 'pointer')};
@@ -108,6 +111,7 @@ export const NavigationLink = styled.a`
   }
 
   @media (min-width: ${NAV_HORIZONTAL_BREAKPOINT}) {
+    padding: 0;
     margin: 0 30px;
   }
 `;
