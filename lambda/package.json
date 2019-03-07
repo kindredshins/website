@@ -10,5 +10,8 @@
     "netlify-lambda": "^1.4.2",
     "query-string": "^6.3.0",
     "sendmail": "^1.4.1"
+  },
+  "devDependencies": {
+    "dotenv": "^6.2.0"
   }
 }

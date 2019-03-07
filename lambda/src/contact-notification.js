@@ -1,33 +1,35 @@
 import sendmail from 'sendmail';
 import querystring from 'query-string';
+import dotenv from 'dotenv';
 
-const emailAddresses = {
-  booking: 'booking@kindredshins.com',
-  enquiry: 'contact@kindredshins.com',
-};
+dotenv.config();
 
-const send = sendmail({
-  logger: {
-    debug: console.log,
-    info: console.info,
-    warn: console.warn,
-    error: console.error,
-  },
-});
+const { CONTACT_BOOKING, CONTACT_ENQUIRY } = process.env;
+const emailAddresses = { booking: CONTACT_BOOKING, enquiry: CONTACT_ENQUIRY };
+const send = sendmail();
 
 export const handler = (event, context, callback) => {
+  if (!CONTACT_BOOKING || !CONTACT_ENQUIRY) {
+    return callback(null, {
+      statusCode: 501,
+      body: JSON.stringify({
+        error: 'Missing CONTACT_* environment variables',
+      }),
+    });
+  }
+
   const body = querystring.parse(event.body);
 
   if (!body.name || !body.email || !body.subject || !body.message) {
     return callback(null, {
-      statusCode: 403,
+      statusCode: 422,
       body: JSON.stringify({ error: 'Missing required fields' }),
     });
   }
 
   if (!emailAddresses[body.subject]) {
     return callback(null, {
-      statusCode: 403,
+      statusCode: 422,
       body: JSON.stringify({ error: 'Invalid subject' }),
     });
   }
