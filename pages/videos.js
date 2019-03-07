@@ -1,18 +1,21 @@
 import React from 'react';
 import styled from 'styled-components';
-import { Page } from '@/components/Page';
+import { Page, PageSidebar, PageBody } from '@/components/Page';
 import videos from '@/data/videos.json';
 
 const Videos = () => (
-  <Page title="Videos">
-    {videos.ids.map(id => (
-      <Video key={id}>
-        <VideoEmbed
-          src={`https://www.youtube-nocookie.com/embed/${id}`}
-          allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-        />
-      </Video>
-    ))}
+  <Page>
+    <PageSidebar title="Videos" />
+    <PageBody>
+      {videos.ids.map(id => (
+        <Video key={id}>
+          <VideoEmbed
+            src={`https://www.youtube-nocookie.com/embed/${id}`}
+            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+          />
+        </Video>
+      ))}
+    </PageBody>
   </Page>
 );
 

@@ -4,7 +4,7 @@ import { rem } from 'polished';
 import { format, compareDesc } from 'date-fns';
 import { resetList } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
-import { Page } from '@/components/Page';
+import { Page, PageSidebar, PageBody } from '@/components/Page';
 import { Button } from '@/components/Button';
 import gigs from '@/data/gigs';
 
@@ -15,82 +15,85 @@ const hasUpcomingGigs = Boolean(upcomingGigs.length);
 const hasPastGigs = Boolean(pastGigs.length);
 
 const Gigs = () => (
-  <Page title="Gigs">
-    {hasUpcomingGigs && (
-      <>
-        <h2>Upcoming Gigs</h2>
-        <GigsItems>
-          {upcomingGigs.map(gig => {
-            const date = new Date(gig.date);
+  <Page>
+    <PageSidebar title="Gigs" />
+    <PageBody>
+      {hasUpcomingGigs && (
+        <>
+          <h2>Upcoming Gigs</h2>
+          <GigsItems>
+            {upcomingGigs.map(gig => {
+              const date = new Date(gig.date);
 
-            return (
-              <GigsItem key={gig.date}>
-                <GigsDate>
-                  <GigsDay>{format(date, 'Do')}</GigsDay>
-                  <GigsMonth>{format(date, 'MMM')}</GigsMonth>
-                  <GigsYear>{format(date, 'YYYY')}</GigsYear>
-                </GigsDate>
-                <GigsBody>
-                  <GigsTitle>{gig.title}</GigsTitle>
-                  <GigsLocation>{gig.location}</GigsLocation>
-                  <p>
-                    Tickets are{' '}
-                    <GigsPrice>
-                      {gig.price === 0 ? 'Free' : `£${gig.price}`}
-                    </GigsPrice>
-                  </p>
-                  {gig.info && (
-                    <Button href={gig.info} as="a">
-                      More info
-                    </Button>
-                  )}{' '}
-                  {gig.tickets && (
-                    <Button href={gig.tickets} as="a">
-                      Get tickets
-                    </Button>
-                  )}
-                </GigsBody>
-              </GigsItem>
-            );
-          })}
-        </GigsItems>
-      </>
-    )}
-    {hasPastGigs && (
-      <>
-        <h2>Past Gigs</h2>
-        <GigsItems>
-          {pastGigs.map(gig => {
-            const date = new Date(gig.date);
+              return (
+                <GigsItem key={gig.date}>
+                  <GigsDate>
+                    <GigsDay>{format(date, 'Do')}</GigsDay>
+                    <GigsMonth>{format(date, 'MMM')}</GigsMonth>
+                    <GigsYear>{format(date, 'YYYY')}</GigsYear>
+                  </GigsDate>
+                  <GigsBody>
+                    <GigsTitle>{gig.title}</GigsTitle>
+                    <GigsLocation>{gig.location}</GigsLocation>
+                    <p>
+                      Tickets are{' '}
+                      <GigsPrice>
+                        {gig.price === 0 ? 'Free' : `£${gig.price}`}
+                      </GigsPrice>
+                    </p>
+                    {gig.info && (
+                      <Button href={gig.info} as="a">
+                        More info
+                      </Button>
+                    )}{' '}
+                    {gig.tickets && (
+                      <Button href={gig.tickets} as="a">
+                        Get tickets
+                      </Button>
+                    )}
+                  </GigsBody>
+                </GigsItem>
+              );
+            })}
+          </GigsItems>
+        </>
+      )}
+      {hasPastGigs && (
+        <>
+          <h2>Past Gigs</h2>
+          <GigsItems>
+            {pastGigs.map(gig => {
+              const date = new Date(gig.date);
 
-            return (
-              <GigsItem key={gig.date}>
-                <GigsDate>
-                  <GigsDay>{format(date, 'Do')}</GigsDay>
-                  <GigsMonth>{format(date, 'MMM')}</GigsMonth>
-                  <GigsYear>{format(date, 'YYYY')}</GigsYear>
-                </GigsDate>
-                <GigsBody>
-                  <GigsTitle>{gig.title}</GigsTitle>
-                  <GigsLocation>{gig.location}</GigsLocation>
-                  <p>
-                    Tickets were{' '}
-                    <GigsPrice>
-                      {gig.price === 0 ? 'Free' : `£${gig.price}`}
-                    </GigsPrice>
-                  </p>
-                  {gig.info && (
-                    <Button href={gig.info} as="a">
-                      More info
-                    </Button>
-                  )}
-                </GigsBody>
-              </GigsItem>
-            );
-          })}
-        </GigsItems>
-      </>
-    )}
+              return (
+                <GigsItem key={gig.date}>
+                  <GigsDate>
+                    <GigsDay>{format(date, 'Do')}</GigsDay>
+                    <GigsMonth>{format(date, 'MMM')}</GigsMonth>
+                    <GigsYear>{format(date, 'YYYY')}</GigsYear>
+                  </GigsDate>
+                  <GigsBody>
+                    <GigsTitle>{gig.title}</GigsTitle>
+                    <GigsLocation>{gig.location}</GigsLocation>
+                    <p>
+                      Tickets were{' '}
+                      <GigsPrice>
+                        {gig.price === 0 ? 'Free' : `£${gig.price}`}
+                      </GigsPrice>
+                    </p>
+                    {gig.info && (
+                      <Button href={gig.info} as="a">
+                        More info
+                      </Button>
+                    )}
+                  </GigsBody>
+                </GigsItem>
+              );
+            })}
+          </GigsItems>
+        </>
+      )}
+    </PageBody>
   </Page>
 );
 

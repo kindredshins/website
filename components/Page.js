@@ -6,31 +6,41 @@ import { rgba } from 'polished';
 import { theme } from '@/styles/theme';
 import { scrollbar } from '@/styles/mixins';
 
-const Page = ({ children, title }) => {
-  return (
-    <PageContainer>
-      <Head>
-        <title>{title} - Kindred Shins</title>
-      </Head>
-      <Inner>
-        <Sidebar>
-          <Logo
-            src="/static/images/logo-invert.png"
-            width="100"
-            height="100"
-            title="Kindred Shins"
-          />
-          <h1>{title}</h1>
-        </Sidebar>
-        <Body>{children}</Body>
-      </Inner>
-    </PageContainer>
-  );
-};
+const Page = ({ children }) => (
+  <PageContainer>
+    <Inner>{children}</Inner>
+  </PageContainer>
+);
 
 Page.propTypes = {
   children: PropTypes.node.isRequired,
+};
+
+const PageSidebar = ({ children, title, pageTitle }) => (
+  <Sidebar>
+    <Head>
+      <title>{pageTitle || title} - Kindred Shins</title>
+    </Head>
+    <Logo
+      src="/static/images/logo-invert.png"
+      width="100"
+      height="100"
+      title="Kindred Shins"
+    />
+    <h1>{title}</h1>
+    {children}
+  </Sidebar>
+);
+
+PageSidebar.propTypes = {
   title: PropTypes.node.isRequired,
+  pageTitle: PropTypes.node,
+  children: PropTypes.node,
+};
+
+PageSidebar.defaultProps = {
+  children: null,
+  pageTitle: '',
 };
 
 const PageContainer = styled.div`
@@ -78,7 +88,7 @@ const Sidebar = styled.div`
   }
 `;
 
-const Body = styled.div`
+const PageBody = styled.div`
   ${scrollbar};
   flex: 1 1 auto;
   overflow-y: auto;
@@ -89,4 +99,4 @@ const Body = styled.div`
   }
 `;
 
-export { Page };
+export { Page, PageSidebar, PageBody };

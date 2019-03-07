@@ -1,9 +1,12 @@
 import React from 'react';
-import { Page } from '@/components/Page';
+import { Page, PageSidebar, PageBody } from '@/components/Page';
 
 const Photos = () => (
-  <Page title="Photos">
-    <p>Coming soon&hellip;</p>
+  <Page>
+    <PageSidebar title="Photos" />
+    <PageBody>
+      <p>Coming soon&hellip;</p>
+    </PageBody>
   </Page>
 );
 

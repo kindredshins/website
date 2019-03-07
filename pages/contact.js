@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import wretch from 'wretch';
 import styled from 'styled-components';
-import { Page } from '@/components/Page';
+import { Page, PageSidebar, PageBody } from '@/components/Page';
 import { Button } from '@/components/Button';
 
 const FORM_NAME = 'contact';
@@ -34,61 +34,64 @@ const Contact = () => {
   }
 
   return (
-    <Page title="Contact">
-      {isSuccess ? (
-        <p>
-          Thank you for reaching out to us {getFirstName()}. We will get back to
-          you as soon as possible.
-        </p>
-      ) : isError ? (
-        <p>
-          Sorry {getFirstName()}, there was a problem sending the form to us.
-          Please try again later.
-        </p>
-      ) : (
-        <form
-          name={FORM_NAME}
-          method="POST"
-          data-netlify="true"
-          netlify-honeypot="bot-field"
-          onSubmit={handleFormSubmit}
-        >
-          <input type="hidden" name="form-name" value={FORM_NAME} />
-          <Row>
-            <Label>Full name</Label>
-            <Input
-              type="text"
-              name="name"
-              onChange={event => setName(event.target.value)}
-              required
-            />
-          </Row>
-          <Row>
-            <Label>Email</Label>
-            <Input type="email" name="email" required />
-          </Row>
-          <Row>
-            <Label>Subject</Label>
-            <Select name="subject">
-              <option value="enquiry">General enquiry</option>
-              <option value="booking">Bookings</option>
-            </Select>
-          </Row>
-          <Row hidden>
-            <Label>Don&apos;t fill this out if you&apos;re human</Label>
-            <input type="text" name="bot-field" />
-          </Row>
-          <Row>
-            <Label>Message</Label>
-            <Textarea name="message" required />
-          </Row>
-          <Row hasLabel={false}>
-            <Button type="submit" style={{ flex: '0 0 auto' }}>
-              Send
-            </Button>
-          </Row>
-        </form>
-      )}
+    <Page>
+      <PageSidebar title="Contact" />
+      <PageBody>
+        {isSuccess ? (
+          <p>
+            Thank you for reaching out to us {getFirstName()}. We will get back
+            to you as soon as possible.
+          </p>
+        ) : isError ? (
+          <p>
+            Sorry {getFirstName()}, there was a problem sending the form to us.
+            Please try again later.
+          </p>
+        ) : (
+          <form
+            name={FORM_NAME}
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            onSubmit={handleFormSubmit}
+          >
+            <input type="hidden" name="form-name" value={FORM_NAME} />
+            <Row>
+              <Label>Full name</Label>
+              <Input
+                type="text"
+                name="name"
+                onChange={event => setName(event.target.value)}
+                required
+              />
+            </Row>
+            <Row>
+              <Label>Email</Label>
+              <Input type="email" name="email" required />
+            </Row>
+            <Row>
+              <Label>Subject</Label>
+              <Select name="subject">
+                <option value="enquiry">General enquiry</option>
+                <option value="booking">Bookings</option>
+              </Select>
+            </Row>
+            <Row hidden>
+              <Label>Don&apos;t fill this out if you&apos;re human</Label>
+              <input type="text" name="bot-field" />
+            </Row>
+            <Row>
+              <Label>Message</Label>
+              <Textarea name="message" required />
+            </Row>
+            <Row hasLabel={false}>
+              <Button type="submit" style={{ flex: '0 0 auto' }}>
+                Send
+              </Button>
+            </Row>
+          </form>
+        )}
+      </PageBody>
     </Page>
   );
 };
