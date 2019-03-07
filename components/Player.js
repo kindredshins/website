@@ -71,6 +71,12 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
           <Icon type="next-track" />
         </PlayerButton>
       </Controls>
+      {/* Necessary iFrame to trigger autoplay in browsers that block autoplay */}
+      <iframe
+        src="/static/silence.mp3"
+        allow="autoplay"
+        style={{ display: 'none' }}
+      />
     </section>
   );
 
