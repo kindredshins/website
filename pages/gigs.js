@@ -27,7 +27,7 @@ const Gigs = () => (
 
               return (
                 <GigsItem key={gig.date}>
-                  <GigsDate>
+                  <GigsDate href={gig.info}>
                     <GigsDay>{format(date, 'Do')}</GigsDay>
                     <GigsMonth>{format(date, 'MMM')}</GigsMonth>
                     <GigsYear>{format(date, 'YYYY')}</GigsYear>
@@ -38,7 +38,7 @@ const Gigs = () => (
                     <p>
                       Tickets are{' '}
                       <GigsPrice>
-                        {gig.price === 0 ? 'Free' : `£${gig.price}`}
+                        {gig.price === 0 ? 'Free' : `£${gig.price.toFixed(2)}`}
                       </GigsPrice>
                     </p>
                     {gig.info && (
@@ -60,14 +60,14 @@ const Gigs = () => (
       )}
       {hasPastGigs && (
         <>
-          <h2>Past Gigs</h2>
+          <h2>Previous Gigs</h2>
           <GigsItems>
             {pastGigs.map(gig => {
               const date = new Date(gig.date);
 
               return (
                 <GigsItem key={gig.date}>
-                  <GigsDate>
+                  <GigsDate href={gig.info}>
                     <GigsDay>{format(date, 'Do')}</GigsDay>
                     <GigsMonth>{format(date, 'MMM')}</GigsMonth>
                     <GigsYear>{format(date, 'YYYY')}</GigsYear>
@@ -99,6 +99,7 @@ const Gigs = () => (
 
 const GigsItems = styled.ol`
   ${resetList};
+  margin-bottom: 30px;
 `;
 
 const GigsItem = styled.li`
