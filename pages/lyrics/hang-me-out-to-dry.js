@@ -49,7 +49,7 @@ const HangMeOutToDry = () => (
       <br />
       And I don’t wanna wait
     </p>
-    <h3>V3</h3>
+    <h3>V2</h3>
     <p>
       Si vous plait, disobey,
       <br />

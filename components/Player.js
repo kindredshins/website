@@ -2,22 +2,26 @@ import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import getConfig from 'next/config';
-import { rem, em } from 'polished';
+import SoundCloudAudio from 'soundcloud-audio';
+import slugify from 'slugify';
+import { rem, em, rgba } from 'polished';
 import { visuallyHidden } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
+import { get } from '@/utils/get';
+import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
 import { Button } from '@/components/Button';
-import SoundCloudAudio from 'soundcloud-audio';
 
 const { publicRuntimeConfig: config } = getConfig();
 
 const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [playlist, setPlaylist] = useState(undefined);
-  const [player, setPlayer] = useState(undefined);
-  const playButtonRef = useRef(undefined);
+  const [playlist, setPlaylist] = useState();
+  const [player, setPlayer] = useState();
+  const playButtonRef = useRef();
   const isLoading = !player || !playlist;
+  const title = get(['tracks', activeTrackIndex, 'title'], playlist);
 
   useEffect(function() {
     if (!player) {
@@ -46,10 +50,46 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
     };
   }, [player, playlist]);
 
+  function handlePauseClick() {
+    setIsPlaying(false);
+    player.pause();
+  }
+
+  function handleTrackEnded() {
+    play(activeTrackIndex + 1);
+  }
+
+  function play(trackIndex = activeTrackIndex) {
+    const lastTrackIndex = playlist.track_count - 1;
+
+    if (trackIndex > lastTrackIndex) {
+      trackIndex = 0;
+    }
+
+    if (trackIndex < 0) {
+      trackIndex = lastTrackIndex;
+    }
+
+    return player.play({ playlistIndex: trackIndex }).then(() => {
+      setIsPlaying(true);
+      setActiveTrackIndex(trackIndex);
+    });
+  }
+
+  function stop() {
+    player.stop();
+    setIsPlaying(false);
+    setActiveTrackIndex(0);
+  }
+
   return (
     <section {...props}>
       <Title>Now playing</Title>
-      {!isLoading && <Track>{playlist.tracks[activeTrackIndex].title}</Track>}
+      {title && (
+        <Link href={`/lyrics/${slugify(title, { lower: true })}`}>
+          <Track>{title}</Track>
+        </Link>
+      )}
       <Controls>
         <PlayerButton
           onClick={() => play(activeTrackIndex - 1)}
@@ -85,38 +125,6 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
       />
     </section>
   );
-
-  function handlePauseClick() {
-    setIsPlaying(false);
-    player.pause();
-  }
-
-  function handleTrackEnded() {
-    play(activeTrackIndex + 1);
-  }
-
-  function play(trackIndex = activeTrackIndex) {
-    const lastTrackIndex = playlist.track_count - 1;
-
-    if (trackIndex > lastTrackIndex) {
-      trackIndex = 0;
-    }
-
-    if (trackIndex < 0) {
-      trackIndex = lastTrackIndex;
-    }
-
-    return player.play({ playlistIndex: trackIndex }).then(() => {
-      setIsPlaying(true);
-      setActiveTrackIndex(trackIndex);
-    });
-  }
-
-  function stop() {
-    player.stop();
-    setIsPlaying(false);
-    setActiveTrackIndex(0);
-  }
 };
 
 Player.propTypes = {
@@ -132,12 +140,19 @@ const Title = styled.div`
   ${visuallyHidden};
 `;
 
-const Track = styled.p`
+const Track = styled.a`
   margin: 0;
   position: absolute;
   white-space: nowrap;
-  opacity: 0.5;
   font-size: ${rem(14)};
+  cursor: pointer;
+  transition: color 200ms;
+  color: ${rgba(theme.foreground, 0.5)};
+
+  &:hover,
+  &:focus {
+    color: ${theme.foreground};
+  }
 
   @media (max-width: 684px) {
     display: none;

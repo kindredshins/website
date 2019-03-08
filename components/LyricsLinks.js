@@ -7,6 +7,26 @@ import { theme } from '@/styles/theme';
 export const LyricsLinks = () => (
   <LinkList>
     <LinkListItem>
+      <Link href="/lyrics/as-is-tradition">
+        <LinkListAnchor>As Is Tradition</LinkListAnchor>
+      </Link>
+    </LinkListItem>
+    <LinkListItem>
+      <Link href="/lyrics/my-resting-piece">
+        <LinkListAnchor>My Resting Piece</LinkListAnchor>
+      </Link>
+    </LinkListItem>
+    <LinkListItem>
+      <Link href="/lyrics/sweet-and-the-strange">
+        <LinkListAnchor>Sweet And The Strange</LinkListAnchor>
+      </Link>
+    </LinkListItem>
+    <LinkListItem>
+      <Link href="/lyrics/the-smoker-never-quits">
+        <LinkListAnchor>The Smoker Never Quits</LinkListAnchor>
+      </Link>
+    </LinkListItem>
+    <LinkListItem>
       <Link href="/lyrics/hang-me-out-to-dry">
         <LinkListAnchor>Hang Me Out To Dry</LinkListAnchor>
       </Link>
