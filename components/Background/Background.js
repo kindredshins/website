@@ -4,10 +4,9 @@ import styled from 'styled-components';
 import imagesJson from './images.json';
 
 export const Background = ({ imageSources, framesPerSecond, ...props }) => {
-  const canvasRef = useRef(null);
+  const canvasRef = useRef();
   const drawDiffRef = useRef(Date.now());
-  const imagesRef = useRef([]);
-  const [isLoadingImages, setIsLoadingImages] = useState(true);
+  const [images, setImages] = useState([]);
 
   useEffect(() => {
     const images = imageSources.map(preload);
@@ -17,19 +16,17 @@ export const Background = ({ imageSources, framesPerSecond, ...props }) => {
       });
     });
 
-    setIsLoadingImages(true);
-    Promise.all(hasLoaded).then(() => setIsLoadingImages(false));
-    imagesRef.current = images;
+    Promise.all(hasLoaded).then(() => setImages(images));
   }, [imageSources]);
 
   useEffect(() => {
-    if (!isLoadingImages) {
+    if (images.length) {
       const animationFrame = draw();
       return function cleanup() {
         cancelAnimationFrame(animationFrame);
       };
     }
-  }, [isLoadingImages]);
+  }, [images.length]);
 
   function preload(image) {
     const preloader = new Image();
@@ -49,7 +46,6 @@ export const Background = ({ imageSources, framesPerSecond, ...props }) => {
 
   function draw(frame = 0) {
     const canvas = canvasRef.current;
-    const images = imagesRef.current;
     const interval = 1000 / framesPerSecond;
     const nextFrame = frame + 1;
 
