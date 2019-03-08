@@ -2,7 +2,8 @@ require('dotenv').config();
 
 module.exports = {
   publicRuntimeConfig: {
-    soundCloudClientId: process.env.SOUNDCLOUD_CLIENT_ID,
-    soundCloudUserId: process.env.SOUNDCLOUD_USER_ID,
+    SOUNDCLOUD_CLIENT_ID: process.env.SOUNDCLOUD_CLIENT_ID,
+    INSTAGRAM_USER_ID: process.env.INSTAGRAM_USER_ID,
+    INSTAGRAM_TOKEN: process.env.INSTAGRAM_TOKEN,
   },
 };

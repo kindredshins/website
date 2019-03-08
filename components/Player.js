@@ -13,6 +13,7 @@ import { Icon } from '@/components/Icon';
 import { Button } from '@/components/Button';
 
 const { publicRuntimeConfig: config } = getConfig();
+const { SOUNDCLOUD_CLIENT_ID } = config;
 
 const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -25,7 +26,7 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
 
   useEffect(function() {
     if (!player) {
-      const scPlayer = new SoundCloudAudio(config.soundCloudClientId);
+      const scPlayer = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
 
       scPlayer.resolve(playlistUrl, scPlaylist => {
         setPlaylist(scPlaylist);
