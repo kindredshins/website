@@ -71,6 +71,7 @@ const Main = styled.main`
   background: url('/static/images/lads.png') no-repeat center bottom;
   background-size: auto 55%;
   position: relative;
+  z-index: 0;
 
   &::before {
     content: '';
@@ -80,6 +81,7 @@ const Main = styled.main`
     width: 100%;
     top: 40px;
     bottom: 0;
+    z-index: -1;
 
     @media (min-height: 925px) and (min-width: 765px) {
       top: 55px;

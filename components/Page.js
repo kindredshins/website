@@ -5,6 +5,7 @@ import Head from 'next/head';
 import { rgba } from 'polished';
 import { theme } from '@/styles/theme';
 import { scrollbar } from '@/styles/mixins';
+import { MailingList } from '@/components/MailingList';
 
 const Page = ({ children }) => (
   <PageContainer>
@@ -29,6 +30,7 @@ const PageSidebar = ({ children, title, pageTitle }) => (
     />
     <h1>{title}</h1>
     {children}
+    <MailingList />
   </Sidebar>
 );
 
@@ -80,7 +82,7 @@ const Sidebar = styled.div`
     border-bottom-width: 0;
     border-right-width: 1px;
     flex-direction: row;
-    width: 280px;
+    width: 360px;
     padding: 0 40px;
     margin: 40px 0;
     display: flex;
