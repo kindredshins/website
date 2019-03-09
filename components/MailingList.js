@@ -8,7 +8,7 @@ import { Button } from '@/components/Button';
 export const MailingList = () => {
   return (
     <MailingListContainer>
-      <NetlifyForm name="Mailing List">
+      <MailingListNetlifyForm name="Mailing List">
         {({ isSuccess, isError }) => (
           <>
             <Title>Can We Spam You?</Title>
@@ -31,7 +31,7 @@ export const MailingList = () => {
             )}
           </>
         )}
-      </NetlifyForm>
+      </MailingListNetlifyForm>
     </MailingListContainer>
   );
 };
@@ -40,6 +40,10 @@ const MailingListContainer = styled.div`
   text-transform: uppercase;
   margin: auto auto 0;
   text-align: center;
+`;
+
+const MailingListNetlifyForm = styled(NetlifyForm)`
+  margin: 0;
 `;
 
 const Title = styled.h2`

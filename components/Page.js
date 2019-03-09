@@ -2,6 +2,7 @@ import React from 'react';
 import styled from 'styled-components';
 import PropTypes from 'prop-types';
 import Head from 'next/head';
+import MediaQuery from 'react-responsive';
 import { rgba } from 'polished';
 import { theme } from '@/styles/theme';
 import { scrollbar } from '@/styles/mixins';
@@ -30,7 +31,9 @@ const PageSidebar = ({ children, title, pageTitle }) => (
     />
     <h1>{title}</h1>
     {children}
-    <MailingList />
+    <MediaQuery minWidth={768}>
+      <MailingList />
+    </MediaQuery>
   </Sidebar>
 );
 
