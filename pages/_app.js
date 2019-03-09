@@ -54,7 +54,7 @@ class KindredShins extends App {
 
 const Wrapper = styled.div`
   min-width: 320px;
-  min-height: 100vh;
+  min-height: 100%;
   width: 100vw;
   display: flex;
   flex-direction: column;

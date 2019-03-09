@@ -3,6 +3,10 @@ import { scrollbar } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
 
 export const GlobalStyle = createGlobalStyle`
+	html, body, #__next {
+		height: 100%;
+	}
+
 	body {
 		${scrollbar};
 		background: ${theme.background};
