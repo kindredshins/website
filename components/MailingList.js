@@ -54,7 +54,7 @@ const Title = styled.h2`
 const Tags = styled.p`
   font-size: ${rem(14)};
   color: #b3b3b3;
-  margin: ${rem(10)} 0 ${rem(20)};
+  margin: 0 0 ${rem(10)};
 `;
 
 const FieldGroup = styled.div`

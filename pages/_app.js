@@ -69,7 +69,7 @@ const Main = styled.main`
   justify-content: flex-end;
   padding: 40px 0;
   background: url('/static/images/lads.png') no-repeat center bottom;
-  background-size: auto 55%;
+  background-size: auto 40%;
   position: relative;
   z-index: 0;
 
@@ -86,6 +86,10 @@ const Main = styled.main`
     @media (min-height: 925px) and (min-width: 765px) {
       top: 55px;
     }
+  }
+
+  @media (min-width: 768px) {
+    background-size: auto 55%;
   }
 
   @media (min-height: 785px) {
