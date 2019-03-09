@@ -30,5 +30,6 @@ export const GlobalStyle = createGlobalStyle`
 	textarea {
     font: inherit;
     color: inherit;
+		border-radius: 0;
   }
 `;
