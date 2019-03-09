@@ -62,7 +62,7 @@ const AsIsTradition = () => (
       <br />
       The only thing I know when I’m all alone
     </p>
-    <h3>(Outro)</h3>
+    <h3>Outro</h3>
     <p>
       And I can be the one that you wanna save,
       <br />

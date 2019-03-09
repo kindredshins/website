@@ -14,6 +14,7 @@
     "export": "yarn build:next && next export && yarn build:lambda"
   },
   "dependencies": {
+    "conditional-wrap": "^1.0.0",
     "date-fns": "^1.30.1",
     "fetch-jsonp": "^1.1.3",
     "next": "^8.0.3",

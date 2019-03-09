@@ -1,19 +1,22 @@
 import React, { useState, useEffect, useRef } from 'react';
 import PropTypes from 'prop-types';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
+import { rem, em, rgba } from 'polished';
 import getConfig from 'next/config';
 import SoundCloudAudio from 'soundcloud-audio';
 import slugify from 'slugify';
-import { rem, em, rgba } from 'polished';
+import ConditionalWrap from 'conditional-wrap';
 import { visuallyHidden } from '@/styles/mixins';
 import { theme } from '@/styles/theme';
 import { get } from '@/utils/get';
 import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
 import { Button } from '@/components/Button';
+import lyrics from '@/data/lyrics.json';
 
 const { publicRuntimeConfig: config } = getConfig();
 const { SOUNDCLOUD_CLIENT_ID } = config;
+const slugifyOpts = { lower: true, remove: /[*+~.()'"!:@]/g };
 
 const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const [isPlaying, setIsPlaying] = useState(false);
@@ -23,6 +26,8 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
   const playButtonRef = useRef();
   const isLoading = !player || !playlist;
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
+  const lyricsSlug = title && slugify(title, slugifyOpts);
+  const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
 
   useEffect(function() {
     if (!player) {
@@ -87,9 +92,14 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
     <section {...props}>
       <Title>Now playing</Title>
       {title && (
-        <Link href={`/lyrics/${slugify(title, { lower: true })}`}>
-          <Track>{title}</Track>
-        </Link>
+        <ConditionalWrap
+          condition={hasLyricsPage}
+          wrap={children => (
+            <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
+          )}
+        >
+          <Track hasHref={hasLyricsPage}>{title}</Track>
+        </ConditionalWrap>
       )}
       <Controls>
         <PlayerButton
@@ -141,19 +151,24 @@ const Title = styled.div`
   ${visuallyHidden};
 `;
 
-const Track = styled.a`
+const Track = styled.span`
   margin: 0;
   position: absolute;
   white-space: nowrap;
   font-size: ${rem(14)};
-  cursor: pointer;
-  transition: color 200ms;
   color: ${rgba(theme.foreground, 0.5)};
 
-  &:hover,
-  &:focus {
-    color: ${theme.foreground};
-  }
+  ${props =>
+    props.hasHref &&
+    css`
+      cursor: pointer;
+      transition: color 200ms;
+
+      &:hover,
+      &:focus {
+        color: ${theme.foreground};
+      }
+    `};
 
   @media (max-width: 684px) {
     display: none;

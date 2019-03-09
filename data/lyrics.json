@@ -1,0 +1,36 @@
+{
+  "tracks": [
+    {
+      "slug": "as-is-tradition",
+      "title": "As Is Tradition"
+    },
+    {
+      "slug": "hang-me-out-to-dry",
+      "title": "Hang Me Out To Dry"
+    },
+    {
+      "slug": "my-resting-piece",
+      "title": "My Resting Piece"
+    },
+    {
+      "slug": "shes-a-crowd",
+      "title": "She's A Crowd"
+    },
+    {
+      "slug": "sweet-and-the-strange",
+      "title": "Sweet And The Strange"
+    },
+    {
+      "slug": "the-smoker-never-quits",
+      "title": "The Smoker Never Quits"
+    },
+    {
+      "slug": "raised-in-a-cage",
+      "title": "Raised In A Cage"
+    },
+    {
+      "slug": "she-floats-like-the-witch",
+      "title": "She Floats Like The Witch"
+    }
+  ]
+}
