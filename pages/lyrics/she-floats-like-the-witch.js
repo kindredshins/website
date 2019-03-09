@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const SheFloatsLikeTheWtich = () => (
   <LyricsPage title="She Floats Like The Witch">
-    <h2>She Floats Like The Witch</h2>
+    <LyricsPageTitle trackId="she-floats-like-the-witch">
+      She Floats Like The Witch
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       Strayed into the mayhem with a hand that never wins,

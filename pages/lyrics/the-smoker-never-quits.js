@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const TheSmokerNeverQuits = () => (
   <LyricsPage title="The Smoker Never Quits">
-    <h2>The Smoker Never Quits</h2>
+    <LyricsPageTitle trackId="the-smoker-never-quits">
+      The Smoker Never Quits
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       Ease my need for your striptease, well I need you to need my need,

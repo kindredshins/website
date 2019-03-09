@@ -3,11 +3,12 @@ import { TypographyStyle, GoogleFont } from 'react-typography';
 import App, { Container as NextContainer } from 'next/app';
 import Head from 'next/head';
 import styled from 'styled-components';
+import { typography } from '@/styles/typography';
 import { GlobalStyle } from '@/components/GlobalStyle';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Background } from '@/components/Background';
-import { typography } from '@/styles/typography';
+import { PlayerProvider } from '@/components/Player';
 
 class KindredShins extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -39,12 +40,14 @@ class KindredShins extends App {
             <TypographyStyle typography={typography} />
             <GoogleFont typography={typography} />
           </Head>
-          <GlobalStyle />
-          <Header />
-          <Main>
-            <Component {...pageProps} />
-          </Main>
-          <Footer />
+          <PlayerProvider playlistUrl="http://soundcloud.com/kindredshins/sets/website">
+            <GlobalStyle />
+            <Header />
+            <Main>
+              <Component {...pageProps} />
+            </Main>
+            <Footer />
+          </PlayerProvider>
         </Wrapper>
         <AppBackground role="presentation" />
       </NextContainer>

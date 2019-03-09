@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const RaisedInACage = () => (
-  <LyricsPage title="Raised In A Cages">
-    <h2>Raised In A Cages</h2>
+  <LyricsPage title="Raised In A Cage">
+    <LyricsPageTitle trackId="raised-in-a-cage">
+      Raised In A Cage
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       Less is more, unless it’s yours,

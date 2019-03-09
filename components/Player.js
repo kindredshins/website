@@ -1,7 +1,7 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
 import styled, { css } from 'styled-components';
-import { rem, em, rgba } from 'polished';
+import { rem, rgba } from 'polished';
 import getConfig from 'next/config';
 import SoundCloudAudio from 'soundcloud-audio';
 import slugify from 'slugify';
@@ -11,42 +11,65 @@ import { theme } from '@/styles/theme';
 import { get } from '@/utils/get';
 import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
-import { Button } from '@/components/Button';
+import { IconButton } from '@/components/Button';
 import lyrics from '@/data/lyrics.json';
 
 const { publicRuntimeConfig: config } = getConfig();
 const { SOUNDCLOUD_CLIENT_ID } = config;
 const slugifyOpts = { lower: true, remove: /[*+~.()'"!:@]/g };
 
-const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
-  const [isPlaying, setIsPlaying] = useState(false);
+export const PlayerContext = React.createContext();
+
+export const PlayerProvider = ({ playlistUrl, children }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
-  const [playlist, setPlaylist] = useState();
-  const [player, setPlayer] = useState();
+  const [context, setContext] = useState({
+    onActiveTrackIndexChange: setActiveTrackIndex,
+  });
+
+  useEffect(() => {
+    if (!context.player) {
+      const player = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
+
+      player.resolve(playlistUrl, playlist => {
+        setContext({ ...context, player, playlist });
+      });
+    }
+  });
+
+  useEffect(() => {
+    setContext({ ...context, activeTrackIndex });
+  }, [activeTrackIndex]);
+
+  return (
+    <PlayerContext.Provider value={context}>{children}</PlayerContext.Provider>
+  );
+};
+
+PlayerProvider.propTypes = {
+  playlistUrl: PropTypes.string.isRequired,
+  children: PropTypes.node.isRequired,
+};
+
+const Player = ({ isAutoPlay, ...props }) => {
+  const {
+    player,
+    playlist,
+    activeTrackIndex,
+    onActiveTrackIndexChange,
+  } = useContext(PlayerContext);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
   const isLoading = !player || !playlist;
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
   const lyricsSlug = title && slugify(title, slugifyOpts);
   const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
 
-  useEffect(function() {
-    if (!player) {
-      const scPlayer = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
-
-      scPlayer.resolve(playlistUrl, scPlaylist => {
-        setPlaylist(scPlaylist);
-        setPlayer(scPlayer);
-      });
-    }
-  });
-
   useEffect(() => {
     if (isLoading) return;
 
     if (isAutoPlay) {
-      play().catch(() => {
-        // no auto play allowed
-      });
+      play();
     }
 
     player.on('ended', handleTrackEnded);
@@ -55,6 +78,19 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
       stop();
     };
   }, [player, playlist]);
+
+  useEffect(() => {
+    if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
+      player
+        .play({ playlistIndex: activeTrackIndex })
+        .then(() => {
+          prevActiveTrackIndex.current = activeTrackIndex;
+        })
+        .catch(() => {
+          // no auto play allowed
+        });
+    }
+  }, [activeTrackIndex]);
 
   function handlePauseClick() {
     setIsPlaying(false);
@@ -76,16 +112,14 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
       trackIndex = lastTrackIndex;
     }
 
-    return player.play({ playlistIndex: trackIndex }).then(() => {
-      setIsPlaying(true);
-      setActiveTrackIndex(trackIndex);
-    });
+    setIsPlaying(true);
+    onActiveTrackIndexChange(trackIndex);
   }
 
   function stop() {
     player.stop();
     setIsPlaying(false);
-    setActiveTrackIndex(0);
+    onActiveTrackIndexChange(0);
   }
 
   return (
@@ -139,7 +173,6 @@ const Player = ({ playlistUrl, isAutoPlay, ...props }) => {
 };
 
 Player.propTypes = {
-  playlistUrl: PropTypes.string.isRequired,
   isAutoPlay: PropTypes.bool,
 };
 
@@ -187,21 +220,7 @@ const Controls = styled.div`
   align-items: center;
 `;
 
-const PlayerButton = styled(Button)`
-  border-color: ${theme.background};
-  padding: ${em(5)} ${em(7)};
-  border-radius: 100%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 35px;
-  height: 35px;
-
-  ${Icon} {
-    width: 14px;
-    height: 14px;
-  }
-
+const PlayerButton = styled(IconButton)`
   &:disabled {
     cursor: wait;
   }

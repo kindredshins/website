@@ -1,4 +1,6 @@
 import styled from 'styled-components';
+import { theme } from '@/styles/theme';
+import { Icon } from '@/components/Icon';
 
 export const Button = styled.button`
   border: 1px solid #363636;
@@ -19,5 +21,22 @@ export const Button = styled.button`
 
   &:enabled:active {
     background: linear-gradient(to bottom, #000, #555);
+  }
+`;
+
+export const IconButton = styled(Button)`
+  padding: 0;
+  border-color: ${theme.background};
+  border-radius: 100%;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
+
+  ${Icon} {
+    width: 14px;
+    height: 14px;
+    flex: 0 0 auto;
   }
 `;

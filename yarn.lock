@@ -669,6 +669,10 @@
   dependencies:
     any-observable "^0.3.0"
 
+"@tanem/svg-injector@^2.1.4":
+  version "2.1.4"
+  resolved "https://registry.yarnpkg.com/@tanem/svg-injector/-/svg-injector-2.1.4.tgz#b804f1c78b5179365ae21061f119263acccbeb13"
+
 "@webassemblyjs/ast@1.7.11":
   version "1.7.11"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.7.11.tgz#b988582cafbb2b095e8b556526f30c90d057cace"
@@ -3943,6 +3947,14 @@ react-responsive@^6.1.1:
     hyphenate-style-name "^1.0.0"
     matchmediaquery "^0.3.0"
     prop-types "^15.6.1"
+
+react-svg@^7.2.9:
+  version "7.2.9"
+  resolved "https://registry.yarnpkg.com/react-svg/-/react-svg-7.2.9.tgz#b81421407cf2ffa767cfc138c2cc2b0cc5262235"
+  dependencies:
+    "@babel/runtime" "^7.3.1"
+    "@tanem/svg-injector" "^2.1.4"
+    prop-types "^15.7.2"
 
 react-typography@^0.16.18:
   version "0.16.18"

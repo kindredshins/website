@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const MyRestingPiece = () => (
   <LyricsPage title="My Resting Piece">
-    <h2>My Resting Piece</h2>
+    <LyricsPageTitle trackId="my-resting-piece">
+      My Resting Piece
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       Sold, but I just need to get her alone,

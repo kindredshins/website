@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const ForNoApparentReason = () => (
   <LyricsPage title="For No Apparent Reason">
-    <h2>For No Apparent Reason</h2>
+    <LyricsPageTitle trackId="for no apparent reason">
+      For No Apparent Reason
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       If no one says it then it isn’t true,

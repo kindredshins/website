@@ -59,7 +59,7 @@ const HeaderBase = ({ router }) => (
       </NavigationItems>
     </Navigation>
 
-    <HeaderPlayer playlistUrl="http://soundcloud.com/kindredshins/sets/website" />
+    <HeaderPlayer />
   </HeaderContainer>
 );
 

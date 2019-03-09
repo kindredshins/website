@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const SweetAndTheStrange = () => (
   <LyricsPage title="Sweet And The Strange">
-    <h2>Sweet And The Strange</h2>
+    <LyricsPageTitle trackId="the-sweet-the-strange">
+      Sweet And The Strange
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       She said there’s nothing left, so please stop pleading on your knees,

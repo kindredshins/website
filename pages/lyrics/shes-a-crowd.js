@@ -1,9 +1,9 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const ShesACrowd = () => (
   <LyricsPage title="She's A Crowd">
-    <h2>She&apos;s A Crowd</h2>
+    <LyricsPageTitle trackId="shes-a-crowd">She&apos;s A Crowd</LyricsPageTitle>
     <h3>V1</h3>
     <p>
       The merry go round, she’s gotta get out,

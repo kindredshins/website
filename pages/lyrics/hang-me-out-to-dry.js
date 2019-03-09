@@ -1,9 +1,11 @@
 import React from 'react';
-import { LyricsPage } from '@/components/LyricsPage';
+import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const HangMeOutToDry = () => (
   <LyricsPage title="Hang Me Out To Dry">
-    <h2>Hang Me Out To Dry</h2>
+    <LyricsPageTitle trackId="hang-me-out-to-dry-1">
+      Hang Me Out To Dry
+    </LyricsPageTitle>
     <h3>V1</h3>
     <p>
       Some enclose, some obey,
