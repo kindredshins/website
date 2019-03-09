@@ -12,7 +12,7 @@ export const MailingList = () => {
         {({ isSuccess, isError }) => (
           <>
             <Title>Can We Spam You?</Title>
-            <Tags>#nakedshins</Tags>
+            <Tags>#news #gigs #nakedshins</Tags>
             {isSuccess ? (
               <p>👍</p>
             ) : isError ? (
@@ -37,7 +37,6 @@ export const MailingList = () => {
 };
 
 const MailingListContainer = styled.div`
-  text-transform: uppercase;
   margin: auto auto 0;
   text-align: center;
 `;
@@ -47,6 +46,7 @@ const MailingListNetlifyForm = styled(NetlifyForm)`
 `;
 
 const Title = styled.h2`
+  text-transform: uppercase;
   margin: 0;
   font-size: 1.25em;
 `;
