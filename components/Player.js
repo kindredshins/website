@@ -1,6 +1,6 @@
 import React, { useState, useEffect, useRef, useContext } from 'react';
 import PropTypes from 'prop-types';
-import styled, { css } from 'styled-components';
+import styled, { css, keyframes } from 'styled-components';
 import { rem, rgba } from 'polished';
 import getConfig from 'next/config';
 import SoundCloudAudio from 'soundcloud-audio';
@@ -11,7 +11,7 @@ import { theme } from '@/styles/theme';
 import { get } from '@/utils/get';
 import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
-import { IconButton } from '@/components/Button';
+import { Button, IconButton } from '@/components/Button';
 import lyrics from '@/data/lyrics.json';
 
 const { publicRuntimeConfig: config } = getConfig();
@@ -32,18 +32,7 @@ export const PlayerProvider = ({ playlistUrl, children }) => {
 
       // fiddle volume to get around autoplay issues
       player.resolve(playlistUrl, playlist => {
-        player.audio.volume = 0;
-        player
-          .play()
-          .then(() => {
-            player.audio.volume = 1;
-            player.stop();
-            setContext({ ...context, player, playlist });
-          })
-          .catch(() => {
-            // eslint-disable-next-line no-console
-            console.warn('Autoplay has been prevented for <Player />');
-          });
+        setContext({ ...context, player, playlist });
       });
     }
   });
@@ -69,7 +58,8 @@ const Player = ({ isAutoPlay, ...props }) => {
     activeTrackIndex,
     onActiveTrackIndexChange,
   } = useContext(PlayerContext);
-  const [isPlaying, setIsPlaying] = useState(isAutoPlay);
+  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
   const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
@@ -95,11 +85,23 @@ const Player = ({ isAutoPlay, ...props }) => {
     if (isLoading) return;
 
     if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
-      player.play({ playlistIndex: activeTrackIndex }).then(() => {
-        prevActiveTrackIndex.current = activeTrackIndex;
-      });
+      player
+        .play({ playlistIndex: activeTrackIndex })
+        .then(() => {
+          prevActiveTrackIndex.current = activeTrackIndex;
+        })
+        .catch(() => {
+          // eslint-disable-next-line no-console
+          console.warn('Play has been prevented for <Player />');
+          setIsPermissionModalOpen(true);
+          setIsPlaying(false);
+        });
     }
   }, [isPlaying, activeTrackIndex]);
+
+  useEffect(() => {
+    console.log(isLoading, isPermissionModalOpen);
+  });
 
   function handlePauseClick() {
     setIsPlaying(false);
@@ -131,54 +133,79 @@ const Player = ({ isAutoPlay, ...props }) => {
     onActiveTrackIndexChange(0);
   }
 
-  return (
-    <section {...props}>
-      <Title>Now playing</Title>
-      {title && (
-        <ConditionalWrap
-          condition={hasLyricsPage}
-          wrap={children => (
-            <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
-          )}
-        >
-          <Track hasHref={hasLyricsPage}>{title}</Track>
-        </ConditionalWrap>
-      )}
+  function handlePermissionGranted() {
+    play();
+    setIsPermissionModalOpen(false);
+  }
 
-      <Controls>
-        <PlayerButton
-          onClick={() => play(activeTrackIndex - 1)}
-          disabled={isLoading}
-        >
-          <Icon type="previous-track" />
-        </PlayerButton>
-        {isPlaying ? (
-          <LargePlayerButton onClick={handlePauseClick} disabled={isLoading}>
-            <Icon type="pause" />
-          </LargePlayerButton>
-        ) : (
-          <LargePlayerButton
-            onClick={() => play()}
-            ref={playButtonRef}
+  return (
+    <>
+      {!isLoading && isPermissionModalOpen && (
+        <AutoPlayPermission>
+          <AutoPlayPermissionModal>
+            <h2 style={{ marginBottom: 5 }}>
+              Can we autoplay our music for you?
+            </h2>
+            <p>
+              Your browser has prevented us from doing this so we need your
+              permission to give you the full Kindred Shins experience. You can
+              play it manually later if you prefer.
+            </p>
+            <Button onClick={handlePermissionGranted}>Yes, please</Button>
+            <Button onClick={() => setIsPermissionModalOpen(false)}>
+              No, thank you
+            </Button>
+          </AutoPlayPermissionModal>
+        </AutoPlayPermission>
+      )}
+      <section {...props}>
+        <Title>Now playing</Title>
+        {title && (
+          <ConditionalWrap
+            condition={hasLyricsPage}
+            wrap={children => (
+              <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
+            )}
+          >
+            <Track hasHref={hasLyricsPage}>{title}</Track>
+          </ConditionalWrap>
+        )}
+
+        <Controls>
+          <PlayerButton
+            onClick={() => play(activeTrackIndex - 1)}
             disabled={isLoading}
           >
-            <Icon type="play" style={{ marginLeft: 3 }} />
-          </LargePlayerButton>
-        )}
-        <PlayerButton
-          onClick={() => play(activeTrackIndex + 1)}
-          disabled={isLoading}
-        >
-          <Icon type="next-track" />
-        </PlayerButton>
-      </Controls>
-      {/* Necessary iFrame to trigger autoplay in browsers that block autoplay */}
-      <iframe
-        src="/static/silence.mp3"
-        allow="autoplay"
-        style={{ display: 'none' }}
-      />
-    </section>
+            <Icon type="previous-track" />
+          </PlayerButton>
+          {isPlaying ? (
+            <LargePlayerButton onClick={handlePauseClick} disabled={isLoading}>
+              <Icon type="pause" />
+            </LargePlayerButton>
+          ) : (
+            <LargePlayerButton
+              onClick={() => play()}
+              ref={playButtonRef}
+              disabled={isLoading}
+            >
+              <Icon type="play" style={{ marginLeft: 3 }} />
+            </LargePlayerButton>
+          )}
+          <PlayerButton
+            onClick={() => play(activeTrackIndex + 1)}
+            disabled={isLoading}
+          >
+            <Icon type="next-track" />
+          </PlayerButton>
+        </Controls>
+        {/* Necessary iFrame to trigger autoplay in Chrome */}
+        <iframe
+          src="/static/silence.mp3"
+          allow="autoplay"
+          style={{ display: 'none' }}
+        />
+      </section>
+    </>
   );
 };
 
@@ -189,6 +216,34 @@ Player.propTypes = {
 Player.defaultProps = {
   isAutoPlay: true,
 };
+
+const fadeIn = keyframes`
+  0% {opacity: 0 }
+  100% { opacity: 1 }
+`;
+
+const AutoPlayPermission = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${rgba(theme.background, 0.9)};
+  animation: ${fadeIn} 200ms;
+`;
+
+const AutoPlayPermissionModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: ${theme.foreground};
+  color: ${theme.background};
+  padding: 20px;
+  border-radius: 3px;
+  max-width: 500px;
+  min-width: 300px;
+`;
 
 const Title = styled.div`
   ${visuallyHidden};
