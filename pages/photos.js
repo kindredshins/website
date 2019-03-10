@@ -3,6 +3,7 @@ import getConfig from 'next/config';
 import fetch from 'fetch-jsonp';
 import styled from 'styled-components';
 import { Page, PageSidebar, PageBody } from '@/components/Page';
+import { Loader } from '@/components/Loader';
 
 const { publicRuntimeConfig: config } = getConfig();
 const { INSTAGRAM_USER_ID, INSTAGRAM_TOKEN } = config;
@@ -18,7 +19,6 @@ const Photos = () => {
     fetch(PHOTO_URI)
       .then(response => response.json())
       .then(res => {
-        console.log(res);
         const photos = res.data.map(photo => ({
           src: photo.images.low_resolution.url,
           caption: photo.caption.text,
@@ -34,7 +34,7 @@ const Photos = () => {
       <PageSidebar title="Photos" />
       <PageBody>
         {isLoading ? (
-          <p>Loading&hellip;</p>
+          <Loader>Loading&hellip;</Loader>
         ) : (
           <Gallery>
             {photos.map(photo => (

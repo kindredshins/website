@@ -1,23 +1,29 @@
-import React from 'react';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Page, PageSidebar, PageBody } from '@/components/Page';
+import { Loader } from '@/components/Loader';
 import videos from '@/data/videos.json';
 
-const Videos = () => (
-  <Page>
-    <PageSidebar title="Videos" />
-    <PageBody>
-      {videos.ids.map(id => (
-        <Video key={id}>
-          <VideoEmbed
-            src={`https://www.youtube-nocookie.com/embed/${id}`}
-            allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-          />
-        </Video>
-      ))}
-    </PageBody>
-  </Page>
-);
+const Videos = () => {
+  const [isLoading, setIsLoading] = useState(true);
+  return (
+    <Page>
+      <PageSidebar title="Videos" />
+      <PageBody>
+        {isLoading && <Loader>Loading&hellip;</Loader>}
+        {videos.ids.map(id => (
+          <Video key={id}>
+            <VideoEmbed
+              src={`https://www.youtube-nocookie.com/embed/${id}`}
+              allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
+              onLoad={() => setIsLoading(false)}
+            />
+          </Video>
+        ))}
+      </PageBody>
+    </Page>
+  );
+};
 
 const Video = styled.div`
   width: 640px;

@@ -98,6 +98,7 @@ const PageBody = styled.div`
   flex: 1 1 auto;
   overflow-y: auto;
   padding: 20px;
+  position: relative;
 
   @media (min-width: 768px) {
     padding: 40px;
