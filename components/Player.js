@@ -78,8 +78,11 @@ const Player = ({ isAutoPlay, ...props }) => {
     }
 
     player.on('ended', handleTrackEnded);
+    // when user pauses from phone controls outside of website
+    player.audio.addEventListener('pause', pause);
     return function cleanup() {
       player.off('ended', handleTrackEnded);
+      player.audio.removeEventListener('pause', pause);
     };
   }, [isLoading]);
 
@@ -88,15 +91,6 @@ const Player = ({ isAutoPlay, ...props }) => {
       play();
     }
   }, [activeTrackIndex]);
-
-  function handlePauseClick() {
-    setIsPlaying(false);
-    player.pause();
-  }
-
-  function handleTrackEnded() {
-    play(activeTrackIndex + 1);
-  }
 
   function play(trackIndex = activeTrackIndex) {
     const lastTrackIndex = playlist.track_count - 1;
@@ -122,9 +116,18 @@ const Player = ({ isAutoPlay, ...props }) => {
       });
   }
 
+  function pause() {
+    setIsPlaying(false);
+    player.pause();
+  }
+
   function handlePermissionGranted() {
     play();
     setIsPermissionModalOpen(false);
+  }
+
+  function handleTrackEnded() {
+    play(activeTrackIndex + 1);
   }
 
   return (
@@ -148,7 +151,7 @@ const Player = ({ isAutoPlay, ...props }) => {
             <Icon type="previous-track" />
           </PlayerButton>
           {isPlaying ? (
-            <LargePlayerButton onClick={handlePauseClick} disabled={isLoading}>
+            <LargePlayerButton onClick={pause} disabled={isLoading}>
               <Icon type="pause" />
             </LargePlayerButton>
           ) : (
