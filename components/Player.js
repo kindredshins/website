@@ -33,11 +33,17 @@ export const PlayerProvider = ({ playlistUrl, children }) => {
       // fiddle volume to get around autoplay issues
       player.resolve(playlistUrl, playlist => {
         player.audio.volume = 0;
-        player.play().then(() => {
-          player.audio.volume = 1;
-          player.stop();
-          setContext({ ...context, player, playlist });
-        });
+        player
+          .play()
+          .then(() => {
+            player.audio.volume = 1;
+            player.stop();
+            setContext({ ...context, player, playlist });
+          })
+          .catch(() => {
+            // eslint-disable-next-line no-console
+            console.warn('Autoplay has been prevented for <Player />');
+          });
       });
     }
   });
@@ -89,14 +95,9 @@ const Player = ({ isAutoPlay, ...props }) => {
     if (isLoading) return;
 
     if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
-      player
-        .play({ playlistIndex: activeTrackIndex })
-        .then(() => {
-          prevActiveTrackIndex.current = activeTrackIndex;
-        })
-        .catch(() => {
-          // no auto play allowed
-        });
+      player.play({ playlistIndex: activeTrackIndex }).then(() => {
+        prevActiveTrackIndex.current = activeTrackIndex;
+      });
     }
   }, [isPlaying, activeTrackIndex]);
 
@@ -171,6 +172,12 @@ const Player = ({ isAutoPlay, ...props }) => {
           <Icon type="next-track" />
         </PlayerButton>
       </Controls>
+      {/* Necessary iFrame to trigger autoplay in browsers that block autoplay */}
+      <iframe
+        src="/static/silence.mp3"
+        allow="autoplay"
+        style={{ display: 'none' }}
+      />
     </section>
   );
 };
