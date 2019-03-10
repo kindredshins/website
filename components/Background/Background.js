@@ -10,9 +10,13 @@ export const Background = ({ imageSources, framesPerSecond, ...props }) => {
 
   useEffect(() => {
     const images = imageSources.map(preload);
-    images.map(image => {
-      image.addEventListener('load', () => setImages([...images, image]));
+    const hasLoaded = images.map(image => {
+      return new Promise(resolve => {
+        image.addEventListener('load', resolve);
+      });
     });
+
+    Promise.all(hasLoaded).then(() => setImages(images));
   }, [imageSources]);
 
   useEffect(() => {
