@@ -23,19 +23,22 @@ export const PlayerContext = React.createContext();
 export const PlayerProvider = ({ playlistUrl, children }) => {
   const [activeTrackIndex, setActiveTrackIndex] = useState(0);
   const [context, setContext] = useState({
+    isLoading: true,
+    activeTrackIndex: 0,
     onActiveTrackIndexChange: setActiveTrackIndex,
   });
 
   useEffect(() => {
-    if (!context.player) {
-      const player = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
+    const player = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
 
-      // fiddle volume to get around autoplay issues
-      player.resolve(playlistUrl, playlist => {
-        setContext({ ...context, player, playlist });
-      });
-    }
-  });
+    player.resolve(playlistUrl, playlist => {
+      setContext({ ...context, player, playlist, isLoading: false });
+    });
+
+    return function cleanup() {
+      player.stop();
+    };
+  }, [false]);
 
   useEffect(() => {
     setContext({ ...context, activeTrackIndex });
@@ -53,6 +56,7 @@ PlayerProvider.propTypes = {
 
 const Player = ({ isAutoPlay, ...props }) => {
   const {
+    isLoading,
     player,
     playlist,
     activeTrackIndex,
@@ -65,7 +69,6 @@ const Player = ({ isAutoPlay, ...props }) => {
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
   const lyricsSlug = title && slugify(title, slugifyOpts);
   const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
-  const isLoading = !player || !playlist || !title;
 
   useEffect(() => {
     if (isLoading) return;
@@ -77,9 +80,8 @@ const Player = ({ isAutoPlay, ...props }) => {
     player.on('ended', handleTrackEnded);
     return function cleanup() {
       player.off('ended', handleTrackEnded);
-      stop();
     };
-  }, [player, playlist]);
+  }, [isLoading]);
 
   useEffect(() => {
     if (isLoading) return;
@@ -124,12 +126,6 @@ const Player = ({ isAutoPlay, ...props }) => {
       });
   }
 
-  function stop() {
-    player.stop();
-    setIsPlaying(false);
-    onActiveTrackIndexChange(0);
-  }
-
   function handlePermissionGranted() {
     play();
     setIsPermissionModalOpen(false);
@@ -139,16 +135,14 @@ const Player = ({ isAutoPlay, ...props }) => {
     <>
       <section {...props}>
         <Title>Now playing</Title>
-        {title && (
-          <ConditionalWrap
-            condition={hasLyricsPage}
-            wrap={children => (
-              <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
-            )}
-          >
-            <Track hasHref={hasLyricsPage}>{title}</Track>
-          </ConditionalWrap>
-        )}
+        <ConditionalWrap
+          condition={hasLyricsPage}
+          wrap={children => (
+            <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
+          )}
+        >
+          <Track hasHref={hasLyricsPage}>{title}</Track>
+        </ConditionalWrap>
 
         <Controls>
           <PlayerButton
@@ -184,7 +178,7 @@ const Player = ({ isAutoPlay, ...props }) => {
           style={{ display: 'none' }}
         />
       </section>
-      {!isLoading && isPermissionModalOpen && (
+      {isPermissionModalOpen && (
         <AutoPlayPermission>
           <AutoPlayPermissionModal>
             <h2 style={{ marginBottom: 5 }}>
@@ -195,9 +189,9 @@ const Player = ({ isAutoPlay, ...props }) => {
               permission to give you the full Kindred Shins experience. You can
               play it manually later if you prefer.
             </p>
-            <Button onClick={handlePermissionGranted}>Yes, please</Button>
+            <Button onClick={handlePermissionGranted}>Sure, go ahead</Button>
             <Button hasMargin onClick={() => setIsPermissionModalOpen(false)}>
-              No, thank you
+              No thanks
             </Button>
           </AutoPlayPermissionModal>
         </AutoPlayPermission>
