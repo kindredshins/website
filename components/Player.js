@@ -63,7 +63,7 @@ const Player = ({ isAutoPlay, ...props }) => {
     onActiveTrackIndexChange,
   } = useContext(PlayerContext);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [isPermissionModalOpen, setIsPermissionModalOpen] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
   const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
@@ -72,9 +72,14 @@ const Player = ({ isAutoPlay, ...props }) => {
 
   useEffect(() => {
     if (isLoading) return;
+    const isSmallDevice = window.matchMedia('(max-width: 768px)');
 
     if (isAutoPlay) {
-      play();
+      if (isSmallDevice.matches) {
+        setIsModalOpen(true);
+      } else {
+        play();
+      }
     }
 
     player.on('ended', handleTrackEnded);
@@ -111,7 +116,7 @@ const Player = ({ isAutoPlay, ...props }) => {
         onActiveTrackIndexChange(trackIndex);
       })
       .catch(() => {
-        setIsPermissionModalOpen(true);
+        setIsModalOpen(true);
         setIsPlaying(false);
       });
   }
@@ -123,7 +128,7 @@ const Player = ({ isAutoPlay, ...props }) => {
 
   function handlePermissionGranted() {
     play();
-    setIsPermissionModalOpen(false);
+    setIsModalOpen(false);
   }
 
   function handleTrackEnded() {
@@ -177,19 +182,18 @@ const Player = ({ isAutoPlay, ...props }) => {
           style={{ display: 'none' }}
         />
       </section>
-      {isPermissionModalOpen && (
+      {isModalOpen && (
         <AutoPlayPermission>
           <AutoPlayPermissionModal>
             <h2 style={{ marginBottom: 5 }}>
               Can we autoplay our music for you?
             </h2>
             <p>
-              Your browser has prevented us from doing this so we need your
-              permission to give you the full Kindred Shins experience. You can
-              play it manually later if you prefer.
+              We&apos;d like to give you the full Kindred Shins experience but
+              you can play it manually later if you prefer.
             </p>
             <Button onClick={handlePermissionGranted}>Sure, go ahead</Button>
-            <Button hasMargin onClick={() => setIsPermissionModalOpen(false)}>
+            <Button hasMargin onClick={() => setIsModalOpen(false)}>
               No thanks
             </Button>
           </AutoPlayPermissionModal>
