@@ -19,7 +19,7 @@ export const Button = styled.button`
     border-color: #555;
   }
 
-  &:enabled:active {
+  &:not(:disabled):active {
     background: #000 linear-gradient(to bottom, #000, #555);
   }
 
