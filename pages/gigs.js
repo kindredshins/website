@@ -119,6 +119,7 @@ const GigsDate = styled.time`
   justify-content: center;
   flex-direction: column;
   margin-right: 20px;
+  line-height: 1;
 `;
 
 const GigsDay = styled.span`
