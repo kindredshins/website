@@ -59,7 +59,7 @@ const HangMeOutToDry = () => (
       <br />
       A bitter stain, a bitter taste,
       <br />
-      I love you more than you’ll ever know,
+      You’ve hurt me more than you’ll ever know,
       <br />
       So line me up against the wall,
       <br />
