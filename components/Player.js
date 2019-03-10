@@ -87,9 +87,7 @@ const Player = ({ isAutoPlay, ...props }) => {
     if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
       player
         .play({ playlistIndex: activeTrackIndex })
-        .then(() => {
-          prevActiveTrackIndex.current = activeTrackIndex;
-        })
+        .then(() => (prevActiveTrackIndex.current = activeTrackIndex))
         .catch(() => {
           // eslint-disable-next-line no-console
           console.warn('Play has been prevented for <Player />');
@@ -98,10 +96,6 @@ const Player = ({ isAutoPlay, ...props }) => {
         });
     }
   }, [isPlaying, activeTrackIndex]);
-
-  useEffect(() => {
-    console.log(isLoading, isPermissionModalOpen);
-  });
 
   function handlePauseClick() {
     setIsPlaying(false);
@@ -140,24 +134,6 @@ const Player = ({ isAutoPlay, ...props }) => {
 
   return (
     <>
-      {!isLoading && isPermissionModalOpen && (
-        <AutoPlayPermission>
-          <AutoPlayPermissionModal>
-            <h2 style={{ marginBottom: 5 }}>
-              Can we autoplay our music for you?
-            </h2>
-            <p>
-              Your browser has prevented us from doing this so we need your
-              permission to give you the full Kindred Shins experience. You can
-              play it manually later if you prefer.
-            </p>
-            <Button onClick={handlePermissionGranted}>Yes, please</Button>
-            <Button hasMargin onClick={() => setIsPermissionModalOpen(false)}>
-              No, thank you
-            </Button>
-          </AutoPlayPermissionModal>
-        </AutoPlayPermission>
-      )}
       <section {...props}>
         <Title>Now playing</Title>
         {title && (
@@ -205,6 +181,24 @@ const Player = ({ isAutoPlay, ...props }) => {
           style={{ display: 'none' }}
         />
       </section>
+      {!isLoading && isPermissionModalOpen && (
+        <AutoPlayPermission>
+          <AutoPlayPermissionModal>
+            <h2 style={{ marginBottom: 5 }}>
+              Can we autoplay our music for you?
+            </h2>
+            <p>
+              Your browser has prevented us from doing this so we need your
+              permission to give you the full Kindred Shins experience. You can
+              play it manually later if you prefer.
+            </p>
+            <Button onClick={handlePermissionGranted}>Yes, please</Button>
+            <Button hasMargin onClick={() => setIsPermissionModalOpen(false)}>
+              No, thank you
+            </Button>
+          </AutoPlayPermissionModal>
+        </AutoPlayPermission>
+      )}
     </>
   );
 };
@@ -216,34 +210,6 @@ Player.propTypes = {
 Player.defaultProps = {
   isAutoPlay: true,
 };
-
-const fadeIn = keyframes`
-  0% {opacity: 0 }
-  100% { opacity: 1 }
-`;
-
-const AutoPlayPermission = styled.div`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background: ${rgba(theme.background, 0.9)};
-  animation: ${fadeIn} 200ms;
-`;
-
-const AutoPlayPermissionModal = styled.div`
-  position: fixed;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background: ${theme.foreground};
-  color: ${theme.background};
-  padding: 20px;
-  border-radius: 3px;
-  max-width: 500px;
-  min-width: 300px;
-`;
 
 const Title = styled.div`
   ${visuallyHidden};
@@ -269,7 +235,12 @@ const Track = styled.span`
     `};
 
   @media (max-width: 684px) {
-    display: none;
+    right: 100%;
+    top: 3px;
+    margin-right: 10px;
+    max-width: 110px;
+    overflow: hidden;
+    text-overflow: ellipsis;
   }
 
   @media (min-width: 685px) {
@@ -308,6 +279,34 @@ const LargePlayerButton = styled(PlayerButton)`
       height: 26px;
     }
   }
+`;
+
+const fadeIn = keyframes`
+  0% {opacity: 0 }
+  100% { opacity: 1 }
+`;
+
+const AutoPlayPermission = styled.div`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: ${rgba(theme.background, 0.9)};
+  animation: ${fadeIn} 200ms;
+`;
+
+const AutoPlayPermissionModal = styled.div`
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  background: ${theme.foreground};
+  color: ${theme.background};
+  padding: 20px;
+  border-radius: 3px;
+  max-width: 500px;
+  min-width: 300px;
 `;
 
 export { Player };
