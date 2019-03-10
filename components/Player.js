@@ -12,7 +12,6 @@ import { get } from '@/utils/get';
 import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/Button';
-import { Loader } from '@/components/Loader';
 import lyrics from '@/data/lyrics.json';
 
 const { publicRuntimeConfig: config } = getConfig();
@@ -31,8 +30,14 @@ export const PlayerProvider = ({ playlistUrl, children }) => {
     if (!context.player) {
       const player = new SoundCloudAudio(SOUNDCLOUD_CLIENT_ID);
 
+      // fiddle volume to get around autoplay issues
       player.resolve(playlistUrl, playlist => {
-        setContext({ ...context, player, playlist });
+        player.audio.volume = 0;
+        player.play().then(() => {
+          player.audio.volume = 1;
+          player.stop();
+          setContext({ ...context, player, playlist });
+        });
       });
     }
   });
@@ -166,12 +171,6 @@ const Player = ({ isAutoPlay, ...props }) => {
           <Icon type="next-track" />
         </PlayerButton>
       </Controls>
-      {/* Necessary iFrame to trigger autoplay in browsers that block autoplay */}
-      <iframe
-        src="/static/silence.mp3"
-        allow="autoplay"
-        style={{ display: 'none' }}
-      />
     </section>
   );
 };
