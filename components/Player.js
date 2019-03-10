@@ -232,7 +232,7 @@ const Track = styled.span`
 
   @media (max-width: 684px) {
     right: 100%;
-    top: 3px;
+    top: 5px;
     margin-right: 10px;
     max-width: 110px;
     overflow: hidden;
