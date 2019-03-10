@@ -224,7 +224,12 @@ const Controls = styled.div`
 
 const PlayerButton = styled(IconButton)`
   &:disabled {
+    background: ${theme.background};
     cursor: wait;
+
+    ${Icon} {
+      display: none;
+    }
   }
 `;
 
