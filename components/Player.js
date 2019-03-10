@@ -58,7 +58,7 @@ const Player = ({ isAutoPlay, ...props }) => {
     activeTrackIndex,
     onActiveTrackIndexChange,
   } = useContext(PlayerContext);
-  const [isPlaying, setIsPlaying] = useState(false);
+  const [isPlaying, setIsPlaying] = useState(isAutoPlay);
   const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
@@ -81,6 +81,8 @@ const Player = ({ isAutoPlay, ...props }) => {
   }, [player, playlist]);
 
   useEffect(() => {
+    if (isLoading) return;
+
     if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
       player
         .play({ playlistIndex: activeTrackIndex })
@@ -91,7 +93,7 @@ const Player = ({ isAutoPlay, ...props }) => {
           // no auto play allowed
         });
     }
-  }, [activeTrackIndex]);
+  }, [isPlaying, activeTrackIndex]);
 
   function handlePauseClick() {
     setIsPlaying(false);
