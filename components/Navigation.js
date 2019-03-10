@@ -28,7 +28,8 @@ export const NavigationToggleLabel = styled.label`
   ${LINK_STYLES};
   background: url('/static/icons/hamburger.svg') no-repeat left center;
   background-size: 26px;
-  padding-left: 32px;
+  margin: -15px 0;
+  padding: 15px 15px 15px 32px;
 
   @media (min-width: ${NAV_HORIZONTAL_BREAKPOINT}) {
     display: none;
