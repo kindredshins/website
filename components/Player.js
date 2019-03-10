@@ -12,6 +12,7 @@ import { get } from '@/utils/get';
 import { Link } from '@/components/Link';
 import { Icon } from '@/components/Icon';
 import { IconButton } from '@/components/Button';
+import { Loader } from '@/components/Loader';
 import lyrics from '@/data/lyrics.json';
 
 const { publicRuntimeConfig: config } = getConfig();
@@ -60,10 +61,10 @@ const Player = ({ isAutoPlay, ...props }) => {
   const [isPlaying, setIsPlaying] = useState(false);
   const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
-  const isLoading = !player || !playlist;
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
   const lyricsSlug = title && slugify(title, slugifyOpts);
   const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
+  const isLoading = !player || !playlist || !title;
 
   useEffect(() => {
     if (isLoading) return;
@@ -135,6 +136,7 @@ const Player = ({ isAutoPlay, ...props }) => {
           <Track hasHref={hasLyricsPage}>{title}</Track>
         </ConditionalWrap>
       )}
+
       <Controls>
         <PlayerButton
           onClick={() => play(activeTrackIndex - 1)}
