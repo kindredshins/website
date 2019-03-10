@@ -27,8 +27,9 @@ const Videos = () => {
 
 const Video = styled.div`
   width: 640px;
-  height: 358px;
+  padding-top: 56%;
   position: relative;
+  max-width: 100%;
 
   & + & {
     margin-top: 20px;
