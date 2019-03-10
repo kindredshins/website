@@ -103,9 +103,13 @@ const GigsItems = styled.ol`
 `;
 
 const GigsItem = styled.li`
-  border-top: 1px solid ${theme.divider};
   display: flex;
-  padding: 20px 0;
+  padding: 0 0 20px;
+
+  & + & {
+    padding-top: 20px;
+    border-top: 1px solid ${theme.divider};
+  }
 `;
 
 const GigsDate = styled.time`
