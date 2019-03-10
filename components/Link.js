@@ -5,7 +5,8 @@ import NextLink from 'next/link';
 
 const LinkBase = ({ router, children, ...props }) => {
   const child = Children.only(children);
-  const isActive = router.pathname === props.href;
+  const regex = new RegExp(`^${props.href}`);
+  const isActive = regex.test(router.pathname);
 
   return (
     <NextLink {...props}>{React.cloneElement(child, { isActive })}</NextLink>
