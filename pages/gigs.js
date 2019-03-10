@@ -142,13 +142,12 @@ const GigsBody = styled.div`
 `;
 
 const GigsTitle = styled.h3`
-  margin-top: 0;
+  margin: 0;
 `;
 
 const GigsLocation = styled.p`
   opacity: 0.5;
-  margin-top: -1.2em;
-  line-height: 1.4em;
+  margin-bottom: 0;
 `;
 
 const GigsPrice = styled.strong`
