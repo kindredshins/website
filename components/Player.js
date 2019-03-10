@@ -152,7 +152,7 @@ const Player = ({ isAutoPlay, ...props }) => {
               play it manually later if you prefer.
             </p>
             <Button onClick={handlePermissionGranted}>Yes, please</Button>
-            <Button onClick={() => setIsPermissionModalOpen(false)}>
+            <Button hasMargin onClick={() => setIsPermissionModalOpen(false)}>
               No, thank you
             </Button>
           </AutoPlayPermissionModal>

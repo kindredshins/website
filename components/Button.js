@@ -13,6 +13,7 @@ export const Button = styled.button`
   display: inline-block;
   background: #000 linear-gradient(to bottom, #555, #000);
   cursor: pointer;
+  margin-left: ${props => props.hasMargin && '10px'};
 
   &:focus {
     outline: none;
@@ -21,10 +22,6 @@ export const Button = styled.button`
 
   &:not(:disabled):active {
     background: #000 linear-gradient(to bottom, #000, #555);
-  }
-
-  & + & {
-    margin-left: 10px;
   }
 `;
 
