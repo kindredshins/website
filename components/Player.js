@@ -84,18 +84,10 @@ const Player = ({ isAutoPlay, ...props }) => {
   useEffect(() => {
     if (isLoading) return;
 
-    if (isPlaying && prevActiveTrackIndex.current !== activeTrackIndex) {
-      player
-        .play({ playlistIndex: activeTrackIndex })
-        .then(() => (prevActiveTrackIndex.current = activeTrackIndex))
-        .catch(() => {
-          // eslint-disable-next-line no-console
-          console.warn('Play has been prevented for <Player />');
-          setIsPermissionModalOpen(true);
-          setIsPlaying(false);
-        });
+    if (prevActiveTrackIndex.current !== activeTrackIndex) {
+      play();
     }
-  }, [isPlaying, activeTrackIndex]);
+  }, [activeTrackIndex]);
 
   function handlePauseClick() {
     setIsPlaying(false);
@@ -117,8 +109,19 @@ const Player = ({ isAutoPlay, ...props }) => {
       trackIndex = lastTrackIndex;
     }
 
-    setIsPlaying(true);
-    onActiveTrackIndexChange(trackIndex);
+    player
+      .play({ playlistIndex: activeTrackIndex })
+      .then(() => {
+        setIsPlaying(true);
+        onActiveTrackIndexChange(trackIndex);
+        prevActiveTrackIndex.current = activeTrackIndex;
+      })
+      .catch(() => {
+        // eslint-disable-next-line no-console
+        console.warn('Play has been prevented for <Player />');
+        setIsPermissionModalOpen(true);
+        setIsPlaying(false);
+      });
   }
 
   function stop() {
