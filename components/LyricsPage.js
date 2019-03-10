@@ -1,9 +1,9 @@
-import React, { useContext } from 'react';
+import React from 'react';
 import PropTypes from 'prop-types';
 import styled, { keyframes } from 'styled-components';
+import { usePlayer } from '@/hooks/usePlayer';
 import { IconButton } from '@/components/Button';
 import { Icon } from '@/components/Icon';
-import { PlayerContext } from '@/components/Player';
 import { Page, PageSidebar, PageBody } from '@/components/Page';
 import { LyricsLinks } from '@/components/LyricsLinks';
 import MediaQuery from 'react-responsive';
@@ -40,7 +40,7 @@ const LyricsPageTitle = ({ children, trackId }) => {
     playlist,
     activeTrackIndex,
     onActiveTrackIndexChange,
-  } = useContext(PlayerContext);
+  } = usePlayer();
   const trackIndex =
     playlist &&
     playlist.tracks.findIndex(track => {

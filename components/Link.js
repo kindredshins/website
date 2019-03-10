@@ -1,9 +1,10 @@
 import React, { Children } from 'react';
 import PropTypes from 'prop-types';
-import { withRouter } from 'next/router';
+import { useRouter } from '@/hooks/useRouter';
 import NextLink from 'next/link';
 
-const LinkBase = ({ router, children, ...props }) => {
+export const Link = ({ children, ...props }) => {
+  const router = useRouter();
   const child = Children.only(children);
   const regex = new RegExp(`^${props.href}`);
   const isActive = regex.test(router.pathname);
@@ -13,10 +14,7 @@ const LinkBase = ({ router, children, ...props }) => {
   );
 };
 
-LinkBase.propTypes = {
+Link.propTypes = {
   children: PropTypes.node.isRequired,
-  router: PropTypes.shape({ pathname: PropTypes.string }).isRequired,
   href: PropTypes.string.isRequired,
 };
-
-export const Link = withRouter(LinkBase);

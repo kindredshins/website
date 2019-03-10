@@ -1,14 +1,16 @@
 import React from 'react';
+import PropTypes from 'prop-types';
 import { TypographyStyle, GoogleFont } from 'react-typography';
 import App, { Container as NextContainer } from 'next/app';
 import Head from 'next/head';
 import styled from 'styled-components';
 import { typography } from '@/styles/typography';
+import { RouterContextProvider, useRouter } from '@/hooks/useRouter';
 import { GlobalStyle } from '@/components/GlobalStyle';
 import { Header } from '@/components/Header';
 import { Footer } from '@/components/Footer';
 import { Background } from '@/components/Background';
-import { PlayerProvider } from '@/components/Player';
+import { PlayerProvider } from '@/hooks/usePlayer';
 
 class KindredShins extends App {
   static async getInitialProps({ Component, ctx }) {
@@ -116,14 +118,16 @@ class KindredShins extends App {
             <TypographyStyle typography={typography} />
             <GoogleFont typography={typography} />
           </Head>
-          <PlayerProvider playlistUrl="http://soundcloud.com/kindredshins/sets/website">
-            <GlobalStyle />
-            <Header />
-            <Main>
-              <Component {...pageProps} />
-            </Main>
-            <Footer />
-          </PlayerProvider>
+          <RouterContextProvider>
+            <PlayerProvider playlistUrl="http://soundcloud.com/kindredshins/sets/website">
+              <GlobalStyle />
+              <Header />
+              <Main>
+                <Component {...pageProps} />
+              </Main>
+              <Footer />
+            </PlayerProvider>
+          </RouterContextProvider>
         </Wrapper>
         <AppBackground role="presentation" />
       </NextContainer>
