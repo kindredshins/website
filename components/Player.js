@@ -1,5 +1,4 @@
 import React, { useState, useEffect, useRef } from 'react';
-import PropTypes from 'prop-types';
 import styled, { css, keyframes } from 'styled-components';
 import { rem, rgba } from 'polished';
 import slugify from 'slugify';
@@ -15,85 +14,43 @@ import lyrics from '@/data/lyrics.json';
 
 const slugifyOpts = { lower: true, remove: /[*+~.()'"!:@]/g };
 
-const Player = ({ isAutoPlay, ...props }) => {
+const Player = props => {
   const {
-    isLoading,
     player,
     playlist,
     activeTrackIndex,
-    onActiveTrackIndexChange,
+    isLoading,
+    isPlaying,
+    isBlocked,
+    onPlay,
+    onPause,
+    onNext,
+    onPrevious,
   } = usePlayer();
-  const [isPlaying, setIsPlaying] = useState(false);
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const prevActiveTrackIndex = useRef(activeTrackIndex);
   const playButtonRef = useRef();
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
   const lyricsSlug = title && slugify(title, slugifyOpts);
   const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
 
   useEffect(() => {
-    if (isLoading) return;
-    const isSmallDevice = window.matchMedia('(max-width: 768px)');
+    if (!player) return;
 
-    if (isAutoPlay) {
-      if (isSmallDevice.matches) {
-        setIsModalOpen(true);
-      } else {
-        play();
-      }
-    }
-
-    player.on('ended', handleTrackEnded);
-    // when user pauses from phone controls outside of website
-    player.audio.addEventListener('pause', pause);
+    player.on('ended', onNext);
     return function cleanup() {
-      player.off('ended', handleTrackEnded);
-      player.audio.removeEventListener('pause', pause);
+      player.off('ended', onNext);
     };
-  }, [isLoading]);
+  }, [player]);
 
   useEffect(() => {
-    if (!isLoading && prevActiveTrackIndex.current !== activeTrackIndex) {
-      play();
+    if (isBlocked) {
+      setIsModalOpen(true);
     }
-  }, [activeTrackIndex]);
-
-  function play(trackIndex = activeTrackIndex) {
-    const lastTrackIndex = playlist.track_count - 1;
-
-    if (trackIndex > lastTrackIndex) {
-      trackIndex = 0;
-    }
-
-    if (trackIndex < 0) {
-      trackIndex = lastTrackIndex;
-    }
-
-    player
-      .play({ playlistIndex: activeTrackIndex })
-      .then(() => {
-        setIsPlaying(true);
-        prevActiveTrackIndex.current = activeTrackIndex;
-        onActiveTrackIndexChange(trackIndex);
-      })
-      .catch(() => {
-        setIsModalOpen(true);
-        setIsPlaying(false);
-      });
-  }
-
-  function pause() {
-    setIsPlaying(false);
-    player.pause();
-  }
+  }, [isBlocked]);
 
   function handlePermissionGranted() {
-    play();
+    onPlay();
     setIsModalOpen(false);
-  }
-
-  function handleTrackEnded() {
-    play(activeTrackIndex + 1);
   }
 
   return (
@@ -110,38 +67,26 @@ const Player = ({ isAutoPlay, ...props }) => {
         </ConditionalWrap>
 
         <Controls>
-          <PlayerButton
-            onClick={() => play(activeTrackIndex - 1)}
-            disabled={isLoading}
-          >
+          <PlayerButton onClick={onPrevious} disabled={isLoading}>
             <Icon type="previous-track" />
           </PlayerButton>
           {isPlaying ? (
-            <LargePlayerButton onClick={pause} disabled={isLoading}>
+            <LargePlayerButton onClick={onPause} disabled={isLoading}>
               <Icon type="pause" />
             </LargePlayerButton>
           ) : (
             <LargePlayerButton
-              onClick={() => play()}
+              onClick={() => onPlay()}
               ref={playButtonRef}
               disabled={isLoading}
             >
               <Icon type="play" style={{ marginLeft: 3 }} />
             </LargePlayerButton>
           )}
-          <PlayerButton
-            onClick={() => play(activeTrackIndex + 1)}
-            disabled={isLoading}
-          >
+          <PlayerButton onClick={onNext} disabled={isLoading}>
             <Icon type="next-track" />
           </PlayerButton>
         </Controls>
-        {/* Necessary iFrame to trigger autoplay in Chrome */}
-        <iframe
-          src="/static/silence.mp3"
-          allow="autoplay"
-          style={{ display: 'none' }}
-        />
       </section>
       {isModalOpen && (
         <AutoPlayPermission>
@@ -162,14 +107,6 @@ const Player = ({ isAutoPlay, ...props }) => {
       )}
     </>
   );
-};
-
-Player.propTypes = {
-  isAutoPlay: PropTypes.bool,
-};
-
-Player.defaultProps = {
-  isAutoPlay: true,
 };
 
 const Title = styled.div`

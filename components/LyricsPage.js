@@ -36,10 +36,11 @@ LyricsPage.defaultProps = {
 
 const LyricsPageTitle = ({ children, trackId }) => {
   const {
-    player,
     playlist,
     activeTrackIndex,
-    onActiveTrackIndexChange,
+    isPlaying,
+    isLoading,
+    onPlay,
   } = usePlayer();
   const trackIndex =
     playlist &&
@@ -51,12 +52,12 @@ const LyricsPageTitle = ({ children, trackId }) => {
   return (
     <h2>
       {children}
-      {player && (
+      {!isLoading && (
         <Play style={{ marginLeft: 10 }}>
-          {activeTrackIndex === trackIndex ? (
+          {isPlaying && activeTrackIndex === trackIndex ? (
             <MusicBars />
           ) : (
-            <PlayButton onClick={() => onActiveTrackIndexChange(trackIndex)}>
+            <PlayButton onClick={() => onPlay(trackIndex)}>
               <Icon type="play" style={{ marginLeft: 3 }} />
             </PlayButton>
           )}
