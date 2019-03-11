@@ -8,7 +8,7 @@ const SweetAndTheStrange = () => (
     </LyricsPageTitle>
     <h3>V1</h3>
     <p>
-      She said there’s nothing left, so please stop pleading on your knees,
+      She said there’s nothing left, so please stop grieving on your knees,
       <br />
       But my broken heart won’t start, the wounds too deep to bleed,
       <br />
@@ -60,7 +60,7 @@ const SweetAndTheStrange = () => (
     </p>
     <h3>V3</h3>
     <p>
-      She said there’s nothing left, so boy stop pleading on your knees,
+      She said there’s nothing left, so boy stop grieving on your knees,
       <br />
       But my broken heart won’t start, the wounds too deep to bleed,
       <br />

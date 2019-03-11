@@ -22,7 +22,7 @@ const SheFloatsLikeTheWtich = () => (
       <br />
       Plagiarise your kind goodbyes and no one will get hurt,
       <br />
-      Well I hate it, hate it, hate it for what it’s worth?
+      Well I hate it, hate it, hate it for what it’s worth
     </p>
     <h3>Chorus</h3>
     <p>
@@ -50,7 +50,7 @@ const SheFloatsLikeTheWtich = () => (
     <p>
       And the letter that I left on the cabinet read,
       <br />
-      “Can’t show my face if I’m hanging my head”
+      “Can’t show my face if I’m hanging my head
       <br />
       So I’ll be swinging from the rafters of the roof instead,
       <br />
@@ -61,7 +61,7 @@ const SheFloatsLikeTheWtich = () => (
       From the very first glance to the very last shame,
       <br />
       Well instead I shoulda said what the content meant,
-      <br />I guess it all ends in tears again
+      <br />I guess it all ends in tears again”
     </p>
     <h3>Outro</h3>
     <p>

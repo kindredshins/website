@@ -3,7 +3,7 @@ import { LyricsPage, LyricsPageTitle } from '@/components/LyricsPage';
 
 const ForNoApparentReason = () => (
   <LyricsPage title="For No Apparent Reason">
-    <LyricsPageTitle trackId="for no apparent reason">
+    <LyricsPageTitle trackId="for-no-apparent-reason">
       For No Apparent Reason
     </LyricsPageTitle>
     <h3>V1</h3>
