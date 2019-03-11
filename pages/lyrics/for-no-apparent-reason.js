@@ -16,7 +16,7 @@ const ForNoApparentReason = () => (
       <br />
       I’m only lonely cos I wanted you,
       <br />
-      I speak for hours cos it never ends,
+      I lay for hours cos it never ends,
       <br />
       To make some promises to break again,
       <br />
