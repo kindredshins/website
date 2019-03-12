@@ -28,10 +28,10 @@ const Player = props => {
     onPrevious,
   } = usePlayer();
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const playButtonRef = useRef();
   const title = get(['tracks', activeTrackIndex, 'title'], playlist);
   const lyricsSlug = title && slugify(title, slugifyOpts);
   const hasLyricsPage = lyrics.tracks.some(track => track.slug === lyricsSlug);
+  const playButtonRef = useRef();
 
   useEffect(() => {
     if (!player) return;

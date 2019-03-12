@@ -24,7 +24,7 @@ export const Background = ({ framesPerSecond, ...props }) => {
     Promise.all(hasLoaded.slice(0, 15)).then(() => {
       setImages(preloadingImages);
     });
-  }, [images]);
+  }, [images, setImages]);
 
   useEffect(() => {
     if (images.length) {

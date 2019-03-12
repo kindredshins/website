@@ -5,13 +5,14 @@ import { Input } from '@/components/Input';
 import { Button } from '@/components/Button';
 import { NetlifyForm } from '@/components/NetlifyForm';
 
+function getFirstName(name) {
+  const [firstName] = name.split(' ');
+  return firstName.charAt(0).toUpperCase() + firstName.slice(1);
+}
+
 const Contact = () => {
   const [name, setName] = useState('');
-
-  function getFirstName() {
-    const [firstName] = name.split(' ');
-    return firstName.charAt(0).toUpperCase() + firstName.slice(1);
-  }
+  const firstName = getFirstName(name);
 
   return (
     <Page>
@@ -21,13 +22,13 @@ const Contact = () => {
           {({ isSuccess, isError }) =>
             isSuccess ? (
               <p>
-                Thank you for reaching out to us {getFirstName()}. We will get
-                back to you as soon as possible.
+                Thank you for reaching out to us {firstName}. We will get back
+                to you as soon as possible.
               </p>
             ) : isError ? (
               <p>
-                Sorry {getFirstName()}, there was a problem sending the form to
-                us. Please try again later.
+                Sorry {firstName}, there was a problem sending the form to us.
+                Please try again later.
               </p>
             ) : (
               <>
