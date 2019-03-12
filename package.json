@@ -11,7 +11,8 @@
     "build:next": "next build",
     "build:lambda": "cd lambda && yarn && yarn build",
     "start": "next start",
-    "export": "yarn build:next && next export && yarn build:lambda"
+    "export": "npm-run-all -s build:next export:next build:lambda",
+    "export:next": "next export"
   },
   "dependencies": {
     "conditional-wrap": "^1.0.0",

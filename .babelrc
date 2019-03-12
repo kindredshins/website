@@ -16,5 +16,17 @@
         }
       }
     ]
-  ]
+  ],
+  "env": {
+    "production": {
+      "plugins": [
+        [
+          "styled-components",
+          {
+            "displayName": false
+          }
+        ]
+      ]
+    }
+  }
 }
