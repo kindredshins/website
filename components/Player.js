@@ -63,7 +63,7 @@ const Player = props => {
             <Link href={`/lyrics/${lyricsSlug}`}>{children}</Link>
           )}
         >
-          <Track hasHref={hasLyricsPage}>{title}</Track>
+          <Track>{title}</Track>
         </ConditionalWrap>
 
         <Controls>
@@ -113,24 +113,23 @@ const Title = styled.div`
   ${visuallyHidden};
 `;
 
-const Track = styled.span`
+const Track = styled.a`
   margin: 0;
   position: absolute;
   white-space: nowrap;
   font-size: ${rem(14)};
   color: ${rgba(theme.foreground, 0.5)};
+  text-decoration: none;
 
-  ${props =>
-    props.hasHref &&
-    css`
-      cursor: pointer;
-      transition: color 200ms;
+  &[href] {
+    cursor: pointer;
+    transition: color 200ms;
 
-      &:hover,
-      &:focus {
-        color: ${theme.foreground};
-      }
-    `};
+    &:hover,
+    &:focus {
+      color: ${theme.foreground};
+    }
+  }
 
   @media (max-width: 684px) {
     right: 100%;

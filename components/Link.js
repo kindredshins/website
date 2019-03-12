@@ -8,9 +8,17 @@ export const Link = ({ children, ...props }) => {
   const child = Children.only(children);
   const regex = new RegExp(`^${props.href}`);
   const isActive = regex.test(router.pathname);
+  let childProps = { isActive };
+
+  if (child.type.target === 'a') {
+    childProps = {
+      ...childProps,
+      href: props.href,
+    };
+  }
 
   return (
-    <NextLink {...props}>{React.cloneElement(child, { isActive })}</NextLink>
+    <NextLink {...props}>{React.cloneElement(child, childProps)}</NextLink>
   );
 };
 
