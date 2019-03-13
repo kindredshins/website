@@ -50,12 +50,17 @@ function playAction(state, trackIndex) {
     trackIndex = lastTrackIndex;
   }
 
-  return { ...state, isPlaying: true, activeTrackIndex: trackIndex };
+  return {
+    ...state,
+    isPlaying: true,
+    isBlocked: false,
+    activeTrackIndex: trackIndex,
+  };
 }
 
 const PlayerProvider = ({ playlistUrl, isAutoPlay, children }) => {
   const [state, dispatch] = useReducer(reducer, initialState);
-  const { player, activeTrackIndex, isLoading, isPlaying } = state;
+  const { player, activeTrackIndex, isLoading, isPlaying, isBlocked } = state;
   const onPlay = trackIndex => dispatch({ type: 'play', payload: trackIndex });
   const onPause = () => dispatch({ type: 'pause' });
   const onNext = () => dispatch({ type: 'next' });
@@ -75,6 +80,21 @@ const PlayerProvider = ({ playlistUrl, isAutoPlay, children }) => {
       player.stop();
     };
   }, [dispatch]);
+
+  useEffect(() => {
+    const handleVisibilityChange = () => {
+      if (document.hidden) {
+        onPause();
+      } else if (isAutoPlay && !isBlocked) {
+        onPlay();
+      }
+    };
+
+    document.addEventListener('visibilitychange', handleVisibilityChange);
+    return function cleanup() {
+      document.removeEventListener('visibilitychange', handleVisibilityChange);
+    };
+  }, [onPause, onPlay]);
 
   useEffect(() => {
     if (!isLoading && isAutoPlay) {
