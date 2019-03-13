@@ -80,7 +80,7 @@ const Player = props => {
               ref={playButtonRef}
               disabled={isLoading}
             >
-              <Icon type="play" style={{ marginLeft: 3 }} />
+              <Icon type="play" style={{ marginLeft: 6 }} />
             </LargePlayerButton>
           )}
           <PlayerButton onClick={onNext} disabled={isLoading}>
