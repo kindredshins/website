@@ -10,23 +10,25 @@ import gigs from '@/data/gigs';
 
 const sortByDateDesc = (a, b) => compareDesc(a.date, b.date);
 const upcomingGigs = [...gigs.upcoming].sort(sortByDateDesc);
-const pastGigs = [...gigs.past].sort(sortByDateDesc);
 const hasUpcomingGigs = Boolean(upcomingGigs.length);
-const hasPastGigs = Boolean(pastGigs.length);
 
 const Gigs = () => (
   <Page>
     <PageSidebar title="Gigs" />
     <PageBody>
-      {hasUpcomingGigs && (
+      {hasUpcomingGigs ? (
         <>
-          <h2>Upcoming Gigs</h2>
           <GigsItems>
             {upcomingGigs.map(gig => {
               const date = new Date(gig.date);
 
               return (
                 <GigsItem key={gig.date}>
+                  {gig.image && (
+                    <a href={gig.info}>
+                      <GigsImage src={gig.image} alt="" />
+                    </a>
+                  )}
                   <GigsDate href={gig.info}>
                     <GigsDay>{format(date, 'Do')}</GigsDay>
                     <GigsMonth>{format(date, 'MMM')}</GigsMonth>
@@ -57,41 +59,11 @@ const Gigs = () => (
             })}
           </GigsItems>
         </>
-      )}
-      {hasPastGigs && (
-        <>
-          <h2>Previous Gigs</h2>
-          <GigsItems>
-            {pastGigs.map(gig => {
-              const date = new Date(gig.date);
-
-              return (
-                <GigsItem key={gig.date}>
-                  <GigsDate href={gig.info}>
-                    <GigsDay>{format(date, 'Do')}</GigsDay>
-                    <GigsMonth>{format(date, 'MMM')}</GigsMonth>
-                    <GigsYear>{format(date, 'YYYY')}</GigsYear>
-                  </GigsDate>
-                  <GigsBody>
-                    <GigsTitle>{gig.title}</GigsTitle>
-                    <GigsLocation>{gig.location}</GigsLocation>
-                    <p>
-                      Tickets were{' '}
-                      <GigsPrice>
-                        {gig.price === 0 ? 'Free' : `£${gig.price}`}
-                      </GigsPrice>
-                    </p>
-                    {gig.info && (
-                      <Button href={gig.info} as="a">
-                        More info
-                      </Button>
-                    )}
-                  </GigsBody>
-                </GigsItem>
-              );
-            })}
-          </GigsItems>
-        </>
+      ) : (
+        <p>
+          Gigs to be announced, but don&apos;t be holding that breath
+          now&hellip;
+        </p>
       )}
     </PageBody>
   </Page>
@@ -105,11 +77,20 @@ const GigsItems = styled.ol`
 const GigsItem = styled.li`
   display: flex;
   padding: 0 0 20px;
+  flex-wrap: wrap;
 
   & + & {
     padding-top: 20px;
     border-top: 1px solid ${theme.divider};
   }
+`;
+
+const GigsImage = styled.img`
+  width: 100%;
+  /* override typography reset with high specificity
+   * TODO: hate this, look into it later.
+   */
+  margin-bottom: 20px !important;
 `;
 
 const GigsDate = styled.time`
@@ -151,7 +132,7 @@ const GigsTitle = styled.h3`
 
 const GigsLocation = styled.p`
   opacity: 0.5;
-  margin-bottom: 0;
+  /* margin-bottom: 0; */
 `;
 
 const GigsPrice = styled.strong`

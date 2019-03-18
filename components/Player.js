@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
-import styled, { css, keyframes } from 'styled-components';
+import styled, { keyframes } from 'styled-components';
 import { rem, rgba } from 'polished';
 import slugify from 'slugify';
 import ConditionalWrap from 'conditional-wrap';
