@@ -70,12 +70,16 @@ export const Background = ({ framesPerSecond, ...props }) => {
           const imageRect = [0, 0, image.width, image.height];
           const canvasRect = [0, 0, canvas.width, canvas.height];
           const hasNextFrame = nextFrame < images.length - 1;
-          drawDiffRef.current = now - (delta % interval);
-          context.clearRect(...canvasRect);
-          context.drawImage(image, ...imageRect, ...canvasRect);
-          currentFrameRef.current = hasNextFrame ? nextFrame : 0;
 
-          draw(currentFrameRef.current);
+          if (image.complete) {
+            drawDiffRef.current = now - (delta % interval);
+            context.clearRect(...canvasRect);
+            context.drawImage(image, ...imageRect, ...canvasRect);
+            currentFrameRef.current = hasNextFrame ? nextFrame : 0;
+            draw(currentFrameRef.current);
+          } else {
+            draw(frame);
+          }
         } else {
           draw(frame);
         }
